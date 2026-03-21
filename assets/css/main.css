@@ -228,86 +228,72 @@ body::after{
   font-weight:700;
   letter-spacing:0.16em;
   color:#fff;
-  appearance:none;
-  -webkit-appearance:none;
-  background:rgba(255, 255, 255, 0.025);
-  border:1px solid rgba(255, 255, 255, 0.12);
+  background:linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border:1.5px solid transparent;
   border-radius:40px;
-  -webkit-backdrop-filter:blur(18px) saturate(1.08);
-  backdrop-filter:blur(18px) saturate(1.08);
+  backdrop-filter:blur(30px);
   box-shadow:
-    0 8px 26px rgba(0, 0, 0, 0.18),
-    0 0 34px rgba(220, 230, 245, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04);
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
   overflow:hidden;
   cursor:pointer;
-  transition:transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease, background 0.45s ease, border-color 0.45s ease;
+  transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events:auto;
   text-transform:uppercase;
-  isolation:isolate;
 }
 .glass-button::before{
   content:'';
   position:absolute;
-  inset:-1px;
-  border-radius:inherit;
-  padding:1.4px;
-  background:conic-gradient(from 0deg,
-    rgba(255,255,255,0.06) 0deg,
-    rgba(255,255,255,0.10) 34deg,
-    rgba(255,255,255,0.92) 58deg,
-    rgba(214,224,236,0.38) 82deg,
-    rgba(255,255,255,0.08) 126deg,
-    rgba(255,255,255,0.05) 360deg);
+  inset:0;
+  border-radius:40px;
+  padding:1.5px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,0.45) 0%,
+    rgba(210,220,230,0.45) 25%,
+    rgba(170,190,210,0.45) 50%,
+    rgba(240,245,255,0.45) 75%,
+    rgba(255,255,255,0.45) 100%);
+  background-size:200% 200%;
   -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor;
-  mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite:exclude;
-  animation:borderOrbit 4.2s linear infinite;
-  opacity:0.82;
-  filter:drop-shadow(0 0 10px rgba(255, 255, 255, 0.16));
-  pointer-events:none;
-  will-change:transform;
+  animation:borderFlow 3s linear infinite;
+  opacity:0.6;
+  transition:opacity 0.5s ease;
 }
-@keyframes borderOrbit {
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
+@keyframes borderFlow {
+  0% { background-position:0% 50%; }
+  100% { background-position:200% 50%; }
 }
 .glass-button::after{
   content:'';
   position:absolute;
   inset:0;
-  border-radius:inherit;
-  background:radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.24) 0%, rgba(225, 235, 245, 0.12) 22%, transparent 58%);
-  opacity:0.18;
-  transition:opacity 0.45s ease;
-  pointer-events:none;
+  border-radius:40px;
+  background:radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  opacity:0;
+  transition:opacity 0.5s ease;
 }
 .glass-button:hover{
-  background:rgba(255, 255, 255, 0.045);
-  border-color:rgba(255, 255, 255, 0.22);
+  background:linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 100%);
   box-shadow:
-    0 12px 42px rgba(0, 0, 0, 0.2),
-    0 0 56px rgba(232, 240, 250, 0.18),
-    0 0 92px rgba(255, 255, 255, 0.09),
-    inset 0 1px 0 rgba(255, 255, 255, 0.24),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+    0 12px 48px rgba(138, 43, 226, 0.3),
+    0 0 80px rgba(0, 191, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
   transform:translateY(-3px) scale(1.02);
 }
 .glass-button:hover::before{
   opacity:1;
-  animation-duration:2.8s;
-  filter:drop-shadow(0 0 14px rgba(255, 255, 255, 0.24));
+  animation-duration:2s;
 }
-.glass-button:hover::after{opacity:0.9}
+.glass-button:hover::after{opacity:1}
 .glass-button:active{
-  transform:translateY(-1px) scale(0.985);
-  background:rgba(255, 255, 255, 0.055);
+  transform:translateY(-1px) scale(0.98);
   box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.18),
-    0 0 38px rgba(255, 255, 255, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    0 6px 24px rgba(138, 43, 226, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 .hero-shimmer{
   position:absolute;
@@ -318,9 +304,9 @@ body::after{
   background:linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.06) 42%,
-    rgba(248, 250, 255, 0.26) 50%,
-    rgba(214, 226, 238, 0.08) 58%,
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 55%,
     transparent 100%
   );
   transform:rotate(30deg);
