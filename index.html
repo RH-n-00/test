@@ -131,17 +131,20 @@ body::after{
 .prism-stage{
   position:relative;
   min-height:clamp(520px, 74vh, 760px);
-  border:1px solid rgba(255,255,255,.055);
-  background:#000;
+  border:1px solid rgba(255,255,255,.06);
+  background:
+    linear-gradient(180deg, rgba(5,5,7,.96), rgba(1,1,2,.99));
   overflow:hidden;
   box-shadow:
-    0 30px 90px rgba(0,0,0,.48),
-    inset 0 1px 0 rgba(255,255,255,.06);
+    0 30px 90px rgba(0,0,0,.52),
+    inset 0 1px 0 rgba(255,255,255,.05),
+    inset 0 0 0 1px rgba(255,255,255,.015);
 }
 .prism-stage::before{
   content:"";
-  position:absolute; inset:18px;
-  border:1px solid rgba(255,255,255,.05);
+  position:absolute; inset:16px;
+  border:1px solid rgba(255,255,255,.04);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.012);
   pointer-events:none;
   z-index:2;
 }
@@ -149,10 +152,14 @@ body::after{
   content:"";
   position:absolute; inset:0;
   background:
-    radial-gradient(circle at center, transparent 28%, rgba(0,0,0,.18) 72%, rgba(0,0,0,.58) 100%),
-    linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.4));
+    radial-gradient(circle at center, transparent 46%, rgba(7,7,10,.08) 58%, rgba(18,5,9,.24) 74%, rgba(2,2,4,.84) 100%);
+  opacity:.6;
   pointer-events:none;
   z-index:1;
+  backdrop-filter:blur(12px) saturate(.82);
+  -webkit-backdrop-filter:blur(12px) saturate(.82);
+  mask:radial-gradient(circle at center, transparent 45%, #000 76%);
+  -webkit-mask:radial-gradient(circle at center, transparent 45%, #000 76%);
 }
 .prism-canvas{
   position:absolute;
@@ -160,6 +167,7 @@ body::after{
   display:block;
   width:100%;
   height:100%;
+  touch-action:none;
 }
 .hero-overlay{
   position:absolute;
@@ -4654,93 +4662,381 @@ void main() {
 `+t.fragmentShader),this.effectShaderQuad?(this.effectShaderQuad.material.dispose(),this.effectShaderQuad.material=new pt(t)):this.effectShaderQuad=new qi(new pt(t))}configureDenoisePass(e=!1){this.samplesDenoise=this.generateDenoiseSamples(this.configuration.denoiseSamples,11);const t={...S_};t.fragmentShader=t.fragmentShader.replace("16",this.configuration.denoiseSamples),e&&(t.fragmentShader=`#define LOGDEPTH
 `+t.fragmentShader),this.poissonBlurQuad?(this.poissonBlurQuad.material.dispose(),this.poissonBlurQuad.material=new pt(t)):this.poissonBlurQuad=new qi(new pt(t))}configureEffectCompositer(e=!1){const t={...M_};e&&(t.fragmentShader=`#define LOGDEPTH
 `+t.fragmentShader),this.configuration.halfRes&&this.configuration.depthAwareUpsampling&&(t.fragmentShader=`#define HALFRES
-`+t.fragmentShader),this.effectCompositerQuad?(this.effectCompositerQuad.material.dispose(),this.effectCompositerQuad.material=new pt(t)):this.effectCompositerQuad=new qi(new pt(t))}generateHemisphereSamples(e){const t=[];for(let n=0;n<e;n++){const i=2.399963*n,s=Math.sqrt(n+.5)/Math.sqrt(e),a=s*Math.cos(i),o=s*Math.sin(i),l=Math.sqrt(1-(a*a+o*o));t.push(new I(a,o,l))}return t}generateDenoiseSamples(e,t){const n=2*Math.PI*t/e,i=1/e,s=i,a=[];let o=i,l=0;for(let c=0;c<e;c++)a.push(new pe(Math.cos(l),Math.sin(l)).multiplyScalar(Math.pow(o,.75))),o+=s,l+=n;return a}setSize(e,t){this.width=e,this.height=t;const n=this.configuration.halfRes?.5:1;this.writeTargetInternal.setSize(e*n,t*n),this.readTargetInternal.setSize(e*n,t*n),this.configuration.halfRes&&this.depthDownsampleTarget.setSize(e*n,t*n),this.configuration.transparencyAware&&(this.transparencyRenderTargetDWFalse.setSize(e,t),this.transparencyRenderTargetDWTrue.setSize(e,t)),this.outputTargetInternal.setSize(e,t)}setDepthTexture(e){this.depthTexture=e}render(e,t,n){const i=e.xr.enabled;e.xr.enabled=!1,e.capabilities.logarithmicDepthBuffer!==this.configuration.logarithmicDepthBuffer&&(this.configuration.logarithmicDepthBuffer=e.capabilities.logarithmicDepthBuffer,this.configureAOPass(this.configuration.logarithmicDepthBuffer),this.configureDenoisePass(this.configuration.logarithmicDepthBuffer),this.configureEffectCompositer(this.configuration.logarithmicDepthBuffer)),this.detectTransparency(),(t.texture.type!==this.outputTargetInternal.texture.type||t.texture.format!==this.outputTargetInternal.texture.format)&&(this.outputTargetInternal.texture.type=t.texture.type,this.outputTargetInternal.texture.format=t.texture.format,this.outputTargetInternal.texture.needsUpdate=!0);let s,a,o;this.debugMode&&(s=e.getContext(),a=s.getExtension("EXT_disjoint_timer_query_webgl2"),a===null&&(console.error("EXT_disjoint_timer_query_webgl2 not available, disabling debug mode."),this.debugMode=!1)),this.debugMode&&(o=s.createQuery(),s.beginQuery(a.TIME_ELAPSED_EXT,o)),this.camera.updateMatrixWorld(),this.configuration.transparencyAware&&this.renderTransparency(e),this._r.set(this.width,this.height);let l=this.configuration.aoRadius;this.configuration.halfRes&&this.configuration.screenSpaceRadius&&(l*=.5),this.configuration.halfRes&&(e.setRenderTarget(this.depthDownsampleTarget),this.depthDownsampleQuad.material.uniforms.sceneDepth.value=this.depthTexture,this.depthDownsampleQuad.material.uniforms.resolution.value=this._r,this.depthDownsampleQuad.material.uniforms.near.value=this.camera.near,this.depthDownsampleQuad.material.uniforms.far.value=this.camera.far,this.depthDownsampleQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.depthDownsampleQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.depthDownsampleQuad.material.uniforms.logDepth.value=this.configuration.logarithmicDepthBuffer,this.depthDownsampleQuad.render(e)),this.effectShaderQuad.material.uniforms.sceneDiffuse.value=t.texture,this.effectShaderQuad.material.uniforms.sceneDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.effectShaderQuad.material.uniforms.sceneNormal.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[1]:null,this.effectShaderQuad.material.uniforms.projMat.value=this.camera.projectionMatrix,this.effectShaderQuad.material.uniforms.viewMat.value=this.camera.matrixWorldInverse,this.effectShaderQuad.material.uniforms.projViewMat.value=this.camera.projectionMatrix.clone().multiply(this.camera.matrixWorldInverse.clone()),this.effectShaderQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.effectShaderQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.effectShaderQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.effectShaderQuad.material.uniforms.resolution.value=this.configuration.halfRes?this._r.clone().multiplyScalar(.5).floor():this._r,this.effectShaderQuad.material.uniforms.time.value=performance.now()/1e3,this.effectShaderQuad.material.uniforms.samples.value=this.samples,this.effectShaderQuad.material.uniforms.bluenoise.value=this.bluenoise,this.effectShaderQuad.material.uniforms.radius.value=l,this.effectShaderQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.effectShaderQuad.material.uniforms.near.value=this.camera.near,this.effectShaderQuad.material.uniforms.far.value=this.camera.far,this.effectShaderQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.effectShaderQuad.material.uniforms.ortho.value=this.camera.isOrthographicCamera,this.effectShaderQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,e.setRenderTarget(this.writeTargetInternal),this.effectShaderQuad.render(e);for(let c=0;c<this.configuration.denoiseIterations;c++)[this.writeTargetInternal,this.readTargetInternal]=[this.readTargetInternal,this.writeTargetInternal],this.poissonBlurQuad.material.uniforms.tDiffuse.value=this.readTargetInternal.texture,this.poissonBlurQuad.material.uniforms.sceneDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.poissonBlurQuad.material.uniforms.projMat.value=this.camera.projectionMatrix,this.poissonBlurQuad.material.uniforms.viewMat.value=this.camera.matrixWorldInverse,this.poissonBlurQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.poissonBlurQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.poissonBlurQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.poissonBlurQuad.material.uniforms.resolution.value=this.configuration.halfRes?this._r.clone().multiplyScalar(.5).floor():this._r,this.poissonBlurQuad.material.uniforms.time.value=performance.now()/1e3,this.poissonBlurQuad.material.uniforms.blueNoise.value=this.bluenoise,this.poissonBlurQuad.material.uniforms.radius.value=this.configuration.denoiseRadius*(this.configuration.halfRes?.5:1),this.poissonBlurQuad.material.uniforms.worldRadius.value=l,this.poissonBlurQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.poissonBlurQuad.material.uniforms.index.value=c,this.poissonBlurQuad.material.uniforms.poissonDisk.value=this.samplesDenoise,this.poissonBlurQuad.material.uniforms.near.value=this.camera.near,this.poissonBlurQuad.material.uniforms.far.value=this.camera.far,this.poissonBlurQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.poissonBlurQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,e.setRenderTarget(this.writeTargetInternal),this.poissonBlurQuad.render(e);this.configuration.transparencyAware&&(this.effectCompositerQuad.material.uniforms.transparencyDWFalse.value=this.transparencyRenderTargetDWFalse.texture,this.effectCompositerQuad.material.uniforms.transparencyDWTrue.value=this.transparencyRenderTargetDWTrue.texture,this.effectCompositerQuad.material.uniforms.transparencyDWTrueDepth.value=this.transparencyRenderTargetDWTrue.depthTexture,this.effectCompositerQuad.material.uniforms.transparencyAware.value=!0),this.effectCompositerQuad.material.uniforms.sceneDiffuse.value=t.texture,this.effectCompositerQuad.material.uniforms.sceneDepth.value=this.depthTexture,this.effectCompositerQuad.material.uniforms.near.value=this.camera.near,this.effectCompositerQuad.material.uniforms.far.value=this.camera.far,this.effectCompositerQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.effectCompositerQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.effectCompositerQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.effectCompositerQuad.material.uniforms.ortho.value=this.camera.isOrthographicCamera,this.effectCompositerQuad.material.uniforms.downsampledDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.effectCompositerQuad.material.uniforms.resolution.value=this._r,this.effectCompositerQuad.material.uniforms.blueNoise.value=this.bluenoise,this.effectCompositerQuad.material.uniforms.intensity.value=this.configuration.intensity,this.effectCompositerQuad.material.uniforms.renderMode.value=this.configuration.renderMode,this.effectCompositerQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,this.effectCompositerQuad.material.uniforms.radius.value=l,this.effectCompositerQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.effectCompositerQuad.material.uniforms.gammaCorrection.value=this.autosetGamma?this.renderToScreen:this.configuration.gammaCorrection,this.effectCompositerQuad.material.uniforms.tDiffuse.value=this.writeTargetInternal.texture,this.effectCompositerQuad.material.uniforms.color.value=this._c.copy(this.configuration.color).convertSRGBToLinear(),this.effectCompositerQuad.material.uniforms.colorMultiply.value=this.configuration.colorMultiply,this.effectCompositerQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.effectCompositerQuad.material.uniforms.fog.value=!!this.scene.fog,this.scene.fog&&(this.scene.fog.isFog?(this.effectCompositerQuad.material.uniforms.fogExp.value=!1,this.effectCompositerQuad.material.uniforms.fogNear.value=this.scene.fog.near,this.effectCompositerQuad.material.uniforms.fogFar.value=this.scene.fog.far):this.scene.fog.isFogExp2?(this.effectCompositerQuad.material.uniforms.fogExp.value=!0,this.effectCompositerQuad.material.uniforms.fogDensity.value=this.scene.fog.density):console.error(`Unsupported fog type ${this.scene.fog.constructor.name} in SSAOPass.`)),e.setRenderTarget(this.outputTargetInternal),this.effectCompositerQuad.render(e),e.setRenderTarget(this.renderToScreen?null:n),this.copyQuad.material.uniforms.tDiffuse.value=this.outputTargetInternal.texture,this.copyQuad.render(e),this.debugMode&&(s.endQuery(a.TIME_ELAPSED_EXT),xh(o,s,this)),e.xr.enabled=i}enableDebugMode(){this.debugMode=!0}disableDebugMode(){this.debugMode=!1}setDisplayMode(e){this.configuration.renderMode=["Combined","AO","No AO","Split","Split AO"].indexOf(e)}setQualityMode(e){e==="Performance"?(this.configuration.aoSamples=8,this.configuration.denoiseSamples=4,this.configuration.denoiseRadius=12):e==="Low"?(this.configuration.aoSamples=16,this.configuration.denoiseSamples=4,this.configuration.denoiseRadius=12):e==="Medium"?(this.configuration.aoSamples=16,this.configuration.denoiseSamples=8,this.configuration.denoiseRadius=12):e==="High"?(this.configuration.aoSamples=64,this.configuration.denoiseSamples=8,this.configuration.denoiseRadius=6):e==="Ultra"&&(this.configuration.aoSamples=64,this.configuration.denoiseSamples=16,this.configuration.denoiseRadius=6)}}Uint8Array.from(atob(_h),r=>r.charCodeAt(0));let Lc=new v_;class b_{constructor(e,t=!1){Wo(this,"onResize",()=>{let e=this.canvas;this.vp.canvas.width=e.offsetWidth,this.vp.canvas.height=e.offsetHeight,this.vp.canvas.dpr=Math.min(window.devicePixelRatio,2),this.vp.scene.width=window.innerWidth,this.vp.scene.height=window.innerHeight,this.renderer.setSize(this.vp.canvas.width,this.vp.canvas.height,!1);let t=4,n=this.vp.canvas.width/this.vp.canvas.height,i=this.vp.canvas.height/this.vp.canvas.width;n>i?i=1:n=1,this.camera.left=-t*n,this.camera.right=t*n,this.camera.top=t*i,this.camera.bottom=-t*i,this.camera.updateProjectionMatrix(),this.vp.scene=this.getViewSizeAtDepth()});this.canvas=e,this.vp={canvas:{width:e.offsetWidth,height:e.offsetHeight,dpr:Math.min(window.devicePixelRatio,1.5)},scene:{width:1,height:1},screen:{width:window.innerWidth,height:window.innerHeight}},this.renderer=new hh({antialias:!1,canvas:e,stencil:!1}),this.renderer.setSize(this.vp.canvas.width,this.vp.canvas.height,!1),this.renderer.setPixelRatio(this.vp.canvas.dpr);let n=4,i=this.vp.canvas.width/this.vp.canvas.height,s=this.vp.canvas.height/this.vp.canvas.width;if(i>s?s=1:i=1,this.camera=new Hs(-n*i,n*i,n*s,-n*s,.001,1e3),this.scene=new ro,this.clock=new Qv,this.disposed=!1,oo.workaroundEnabled=!0,t){const a=new d_(this.renderer);a.addPass(new c_(this.scene,this.camera));const o=new E_(this.scene,this.camera,this.vp.canvas.width,this.vp.canvas.height);o.configuration.aoRadius=.2,o.configuration.distanceFalloff=.5,o.configuration.intensity=20,o.configuration.color=new Ue(0,0,0),o.configuration.aoSamples=8,o.configuration.denoiseSamples=4,o.configuration.denoiseRadius=12,o.configuration.halfRes=!0,o.setQualityMode("Medium"),o.configuration.halfRes=!0,o.screenSpaceRadius=!0,a.addPass(o),this.composer=a}this.usePostProcess=t,this.addEvents()}addEvents(){window.addEventListener("resize",this.onResize)}dispose(){}getViewSizeAtDepth(e=0){const t=this.camera.fov*Math.PI/180,n=Math.abs((this.camera.position.z-e)*Math.tan(t/2)*2);return{width:n*this.camera.aspect,height:n}}init(){}render(){Lc.begin(),this.usePostProcess?this.composer.render():this.renderer.render(this.scene,this.camera),Lc.end()}}class w_ extends Qt{constructor(e,t,n,i,s){super(),this.type="RoundedBoxGeometry",s=isNaN(s)?1:Math.max(1,Math.floor(s)),e=isNaN(e)?1:e,t=isNaN(t)?1:t,n=isNaN(n)?1:n,i=isNaN(i)?.15:i,i=Math.min(i,Math.min(e,Math.min(t,Math.min(n)))/2);var a=e/2-i,o=t/2-i,l=n/2-i;this.parameters={width:e,height:t,depth:n,radius:i,radiusSegments:s};var c=s+1,u=c*s+1<<3,f=new ut(new Float32Array(u*3),3),h=new ut(new Float32Array(u*3),3),m=[],_=[];new I;var g=new I,p=[],d=[],v=[],x=c*s,S=c*s+1;y(),b(),w(),C(),E(),M();function y(){for(var D=[new I(1,1,1),new I(1,1,-1),new I(-1,1,-1),new I(-1,1,1),new I(1,-1,1),new I(1,-1,-1),new I(-1,-1,-1),new I(-1,-1,1)],P=0;P<8;P++)m.push([]),_.push([]);for(var U=Math.PI/2,G=new I(a,o,l),N=0;N<=s;N++){var q=N/s,Q=q*U,W=Math.cos(Q),B=Math.sin(Q);if(N==s){g.set(0,1,0);var z=g.clone().multiplyScalar(i).add(G);m[0].push(z),p.push(z);var J=g.clone();_[0].push(J),d.push(J);continue}for(var $=0;$<=s;$++){var ie=$/s,me=ie*U;g.x=W*Math.cos(me),g.y=B,g.z=W*Math.sin(me);var z=g.clone().multiplyScalar(i).add(G);m[0].push(z),p.push(z);var J=g.clone().normalize();_[0].push(J),d.push(J)}}for(var xe=1;xe<8;xe++)for(var P=0;P<m[0].length;P++){var z=m[0][P].clone().multiply(D[xe]);m[xe].push(z),p.push(z);var J=_[0][P].clone().multiply(D[xe]);_[xe].push(J),d.push(J)}}function w(){for(var D=[!0,!1,!0,!1,!1,!0,!1,!0],P=c*(s-1),U=0;U<8;U++){for(var G=S*U,N=0;N<s-1;N++)for(var q=N*c,Q=(N+1)*c,W=0;W<s;W++){var B=W+1,z=G+q+W,J=G+q+B,$=G+Q+W,ie=G+Q+B;D[U]?(v.push(z),v.push($),v.push(J),v.push(J),v.push($),v.push(ie)):(v.push(z),v.push(J),v.push($),v.push(J),v.push(ie),v.push($))}for(var W=0;W<s;W++){var z=G+P+W,J=G+P+W+1,$=G+x;D[U]?(v.push(z),v.push($),v.push(J)):(v.push(z),v.push(J),v.push($))}}}function b(){var D=x,P=x+S,U=x+S*2,G=x+S*3;v.push(D),v.push(P),v.push(U),v.push(D),v.push(U),v.push(G),D=x+S*4,P=x+S*5,U=x+S*6,G=x+S*7,v.push(D),v.push(U),v.push(P),v.push(D),v.push(G),v.push(U),D=0,P=S,U=S*4,G=S*5,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G),D=S*2,P=S*3,U=S*6,G=S*7,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G),D=s,P=s+S*3,U=s+S*4,G=s+S*7,v.push(D),v.push(P),v.push(U),v.push(P),v.push(G),v.push(U),D=s+S,P=s+S*2,U=s+S*5,G=s+S*6,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G)}function C(){for(var D=0;D<4;D++)for(var P=D*S,U=4*S+P,G=D&!0,N=0;N<s;N++){var q=N+1,Q=P+N,W=P+q,B=U+N,z=U+q;G?(v.push(Q),v.push(B),v.push(W),v.push(W),v.push(B),v.push(z)):(v.push(Q),v.push(W),v.push(B),v.push(W),v.push(z),v.push(B))}}function M(){for(var D=[0,2,4,6],P=[1,3,5,7],U=0;U<4;U++)for(var G=S*D[U],N=S*P[U],q=1>=U,Q=0;Q<s;Q++){var W=Q*c,B=(Q+1)*c,z=G+W,J=G+B,$=N+W,ie=N+B;q?(v.push(z),v.push($),v.push(J),v.push(J),v.push($),v.push(ie)):(v.push(z),v.push(J),v.push($),v.push(J),v.push(ie),v.push($))}}function E(){for(var D=s-1,P=[0,1,4,5],U=[3,2,7,6],G=[0,1,1,0],N=0;N<4;N++)for(var q=P[N]*S,Q=U[N]*S,W=0;W<=D;W++){var B=q+s+W*c,z=q+(W!=D?s+(W+1)*c:S-1),J=Q+s+W*c,$=Q+(W!=D?s+(W+1)*c:S-1);G[N]?(v.push(B),v.push(J),v.push(z),v.push(z),v.push(J),v.push($)):(v.push(B),v.push(z),v.push(J),v.push(z),v.push($),v.push(J))}}for(var V=0,F=0;F<p.length;F++)f.setXYZ(V,p[F].x,p[F].y,p[F].z),h.setXYZ(V,d[F].x,d[F].y,d[F].z),V++;this.setIndex(new ut(new Uint16Array(v),1)),this.setAttribute("position",f),this.setAttribute("normal",h)}}class A_{constructor(e={},t=null){e.speed==null&&(e.speed=1),e.frequency==null&&(e.frequency=1),e.mouseSize==null&&(e.mouseSize=1),e.rotationSpeed==null&&(e.rotationSpeed=1),e.rotationAmmount==null&&(e.rotationAmmount=0),e.mouseScaling==null&&(e.mouseScaling=0),e.mouseIndent==null&&(e.mouseIndent=1),e.color==null&&(e.color="#1084ff"),e.colorDegrade==null&&(e.colorDegrade=1),e.shape==null&&(e.shape="square");let n=new b_(document.querySelector("#canvas"),!1);n.renderer.shadowMap.enabled=!0,n.renderer.shadowMap.type=Uu,n.camera.position.z=40,n.camera.position.y=40,n.camera.position.x=40,n.camera.lookAt(new I(0,0,0)),this.rendering=n;let i={value:0};n.scene.add(new Yv(10461087,16777215,1)),n.scene.add(new jv(16777215,1));let s=new Rc(9474192,1);n.scene.add(s),s.position.set(-1,.5,1),s.position.multiplyScalar(10);let a=new Rc(16777215,4);n.scene.add(a),a.position.set(1,.5,1),a.position.multiplyScalar(10),a.castShadow=!0,a.shadow.camera.left=-10,a.shadow.camera.right=10,a.shadow.camera.top=10,a.shadow.camera.bottom=-10,a.shadow.camera.far=40,a.shadow.mapSize.width=2048,a.shadow.mapSize.height=2048;let o=55,l=.5,c=o*l,u=new dr(l,l,l);if(u=new w_(l,l,l,.1,4),typeof e.shape=="string")switch(e.shape){case"cylinder":u=new Uo(l,l,l);break;case"torus":u=new No(l*.5,l*.3);break;case"icosahedron":u=new Fo(l,0);break}else u=e.shape;let f=new qv({color:e.color,metalness:0,roughness:0}),h=new Wv(u,f,o*o);h.castShadow=!0,h.receiveShadow=!0;const m=f.color.r+f.color.g+f.color.b,_=new I,g=new I;g.x=f.color.r,g.y=f.color.g,g.z=f.color.b,g.divideScalar(m),g.multiplyScalar(-.5),g.addScalar(1);let p=new gt,d=0;for(let F=0;F<o;F++)for(let D=0;D<o;D++){p.position.set(F*l-c/2+l/2,0,D*l-c/2+l/2),p.updateMatrix(),h.setMatrixAt(d,p.matrix);let P=1-p.position.length()*.12*e.colorDegrade;_.set(P*g.x+(1-g.x),P*g.y+(1-g.y),P*g.z+(1-g.z)),h.setColorAt(d,_),d++}let v=`#define GLSLIFY 1
+`+t.fragmentShader),this.effectCompositerQuad?(this.effectCompositerQuad.material.dispose(),this.effectCompositerQuad.material=new pt(t)):this.effectCompositerQuad=new qi(new pt(t))}generateHemisphereSamples(e){const t=[];for(let n=0;n<e;n++){const i=2.399963*n,s=Math.sqrt(n+.5)/Math.sqrt(e),a=s*Math.cos(i),o=s*Math.sin(i),l=Math.sqrt(1-(a*a+o*o));t.push(new I(a,o,l))}return t}generateDenoiseSamples(e,t){const n=2*Math.PI*t/e,i=1/e,s=i,a=[];let o=i,l=0;for(let c=0;c<e;c++)a.push(new pe(Math.cos(l),Math.sin(l)).multiplyScalar(Math.pow(o,.75))),o+=s,l+=n;return a}setSize(e,t){this.width=e,this.height=t;const n=this.configuration.halfRes?.5:1;this.writeTargetInternal.setSize(e*n,t*n),this.readTargetInternal.setSize(e*n,t*n),this.configuration.halfRes&&this.depthDownsampleTarget.setSize(e*n,t*n),this.configuration.transparencyAware&&(this.transparencyRenderTargetDWFalse.setSize(e,t),this.transparencyRenderTargetDWTrue.setSize(e,t)),this.outputTargetInternal.setSize(e,t)}setDepthTexture(e){this.depthTexture=e}render(e,t,n){const i=e.xr.enabled;e.xr.enabled=!1,e.capabilities.logarithmicDepthBuffer!==this.configuration.logarithmicDepthBuffer&&(this.configuration.logarithmicDepthBuffer=e.capabilities.logarithmicDepthBuffer,this.configureAOPass(this.configuration.logarithmicDepthBuffer),this.configureDenoisePass(this.configuration.logarithmicDepthBuffer),this.configureEffectCompositer(this.configuration.logarithmicDepthBuffer)),this.detectTransparency(),(t.texture.type!==this.outputTargetInternal.texture.type||t.texture.format!==this.outputTargetInternal.texture.format)&&(this.outputTargetInternal.texture.type=t.texture.type,this.outputTargetInternal.texture.format=t.texture.format,this.outputTargetInternal.texture.needsUpdate=!0);let s,a,o;this.debugMode&&(s=e.getContext(),a=s.getExtension("EXT_disjoint_timer_query_webgl2"),a===null&&(console.error("EXT_disjoint_timer_query_webgl2 not available, disabling debug mode."),this.debugMode=!1)),this.debugMode&&(o=s.createQuery(),s.beginQuery(a.TIME_ELAPSED_EXT,o)),this.camera.updateMatrixWorld(),this.configuration.transparencyAware&&this.renderTransparency(e),this._r.set(this.width,this.height);let l=this.configuration.aoRadius;this.configuration.halfRes&&this.configuration.screenSpaceRadius&&(l*=.5),this.configuration.halfRes&&(e.setRenderTarget(this.depthDownsampleTarget),this.depthDownsampleQuad.material.uniforms.sceneDepth.value=this.depthTexture,this.depthDownsampleQuad.material.uniforms.resolution.value=this._r,this.depthDownsampleQuad.material.uniforms.near.value=this.camera.near,this.depthDownsampleQuad.material.uniforms.far.value=this.camera.far,this.depthDownsampleQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.depthDownsampleQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.depthDownsampleQuad.material.uniforms.logDepth.value=this.configuration.logarithmicDepthBuffer,this.depthDownsampleQuad.render(e)),this.effectShaderQuad.material.uniforms.sceneDiffuse.value=t.texture,this.effectShaderQuad.material.uniforms.sceneDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.effectShaderQuad.material.uniforms.sceneNormal.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[1]:null,this.effectShaderQuad.material.uniforms.projMat.value=this.camera.projectionMatrix,this.effectShaderQuad.material.uniforms.viewMat.value=this.camera.matrixWorldInverse,this.effectShaderQuad.material.uniforms.projViewMat.value=this.camera.projectionMatrix.clone().multiply(this.camera.matrixWorldInverse.clone()),this.effectShaderQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.effectShaderQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.effectShaderQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.effectShaderQuad.material.uniforms.resolution.value=this.configuration.halfRes?this._r.clone().multiplyScalar(.5).floor():this._r,this.effectShaderQuad.material.uniforms.time.value=performance.now()/1e3,this.effectShaderQuad.material.uniforms.samples.value=this.samples,this.effectShaderQuad.material.uniforms.bluenoise.value=this.bluenoise,this.effectShaderQuad.material.uniforms.radius.value=l,this.effectShaderQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.effectShaderQuad.material.uniforms.near.value=this.camera.near,this.effectShaderQuad.material.uniforms.far.value=this.camera.far,this.effectShaderQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.effectShaderQuad.material.uniforms.ortho.value=this.camera.isOrthographicCamera,this.effectShaderQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,e.setRenderTarget(this.writeTargetInternal),this.effectShaderQuad.render(e);for(let c=0;c<this.configuration.denoiseIterations;c++)[this.writeTargetInternal,this.readTargetInternal]=[this.readTargetInternal,this.writeTargetInternal],this.poissonBlurQuad.material.uniforms.tDiffuse.value=this.readTargetInternal.texture,this.poissonBlurQuad.material.uniforms.sceneDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.poissonBlurQuad.material.uniforms.projMat.value=this.camera.projectionMatrix,this.poissonBlurQuad.material.uniforms.viewMat.value=this.camera.matrixWorldInverse,this.poissonBlurQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.poissonBlurQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.poissonBlurQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.poissonBlurQuad.material.uniforms.resolution.value=this.configuration.halfRes?this._r.clone().multiplyScalar(.5).floor():this._r,this.poissonBlurQuad.material.uniforms.time.value=performance.now()/1e3,this.poissonBlurQuad.material.uniforms.blueNoise.value=this.bluenoise,this.poissonBlurQuad.material.uniforms.radius.value=this.configuration.denoiseRadius*(this.configuration.halfRes?.5:1),this.poissonBlurQuad.material.uniforms.worldRadius.value=l,this.poissonBlurQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.poissonBlurQuad.material.uniforms.index.value=c,this.poissonBlurQuad.material.uniforms.poissonDisk.value=this.samplesDenoise,this.poissonBlurQuad.material.uniforms.near.value=this.camera.near,this.poissonBlurQuad.material.uniforms.far.value=this.camera.far,this.poissonBlurQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.poissonBlurQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,e.setRenderTarget(this.writeTargetInternal),this.poissonBlurQuad.render(e);this.configuration.transparencyAware&&(this.effectCompositerQuad.material.uniforms.transparencyDWFalse.value=this.transparencyRenderTargetDWFalse.texture,this.effectCompositerQuad.material.uniforms.transparencyDWTrue.value=this.transparencyRenderTargetDWTrue.texture,this.effectCompositerQuad.material.uniforms.transparencyDWTrueDepth.value=this.transparencyRenderTargetDWTrue.depthTexture,this.effectCompositerQuad.material.uniforms.transparencyAware.value=!0),this.effectCompositerQuad.material.uniforms.sceneDiffuse.value=t.texture,this.effectCompositerQuad.material.uniforms.sceneDepth.value=this.depthTexture,this.effectCompositerQuad.material.uniforms.near.value=this.camera.near,this.effectCompositerQuad.material.uniforms.far.value=this.camera.far,this.effectCompositerQuad.material.uniforms.projectionMatrixInv.value=this.camera.projectionMatrixInverse,this.effectCompositerQuad.material.uniforms.viewMatrixInv.value=this.camera.matrixWorld,this.effectCompositerQuad.material.uniforms.logDepth.value=e.capabilities.logarithmicDepthBuffer,this.effectCompositerQuad.material.uniforms.ortho.value=this.camera.isOrthographicCamera,this.effectCompositerQuad.material.uniforms.downsampledDepth.value=this.configuration.halfRes?this.depthDownsampleTarget.texture[0]:this.depthTexture,this.effectCompositerQuad.material.uniforms.resolution.value=this._r,this.effectCompositerQuad.material.uniforms.blueNoise.value=this.bluenoise,this.effectCompositerQuad.material.uniforms.intensity.value=this.configuration.intensity,this.effectCompositerQuad.material.uniforms.renderMode.value=this.configuration.renderMode,this.effectCompositerQuad.material.uniforms.screenSpaceRadius.value=this.configuration.screenSpaceRadius,this.effectCompositerQuad.material.uniforms.radius.value=l,this.effectCompositerQuad.material.uniforms.distanceFalloff.value=this.configuration.distanceFalloff,this.effectCompositerQuad.material.uniforms.gammaCorrection.value=this.autosetGamma?this.renderToScreen:this.configuration.gammaCorrection,this.effectCompositerQuad.material.uniforms.tDiffuse.value=this.writeTargetInternal.texture,this.effectCompositerQuad.material.uniforms.color.value=this._c.copy(this.configuration.color).convertSRGBToLinear(),this.effectCompositerQuad.material.uniforms.colorMultiply.value=this.configuration.colorMultiply,this.effectCompositerQuad.material.uniforms.cameraPos.value=this.camera.getWorldPosition(new I),this.effectCompositerQuad.material.uniforms.fog.value=!!this.scene.fog,this.scene.fog&&(this.scene.fog.isFog?(this.effectCompositerQuad.material.uniforms.fogExp.value=!1,this.effectCompositerQuad.material.uniforms.fogNear.value=this.scene.fog.near,this.effectCompositerQuad.material.uniforms.fogFar.value=this.scene.fog.far):this.scene.fog.isFogExp2?(this.effectCompositerQuad.material.uniforms.fogExp.value=!0,this.effectCompositerQuad.material.uniforms.fogDensity.value=this.scene.fog.density):console.error(`Unsupported fog type ${this.scene.fog.constructor.name} in SSAOPass.`)),e.setRenderTarget(this.outputTargetInternal),this.effectCompositerQuad.render(e),e.setRenderTarget(this.renderToScreen?null:n),this.copyQuad.material.uniforms.tDiffuse.value=this.outputTargetInternal.texture,this.copyQuad.render(e),this.debugMode&&(s.endQuery(a.TIME_ELAPSED_EXT),xh(o,s,this)),e.xr.enabled=i}enableDebugMode(){this.debugMode=!0}disableDebugMode(){this.debugMode=!1}setDisplayMode(e){this.configuration.renderMode=["Combined","AO","No AO","Split","Split AO"].indexOf(e)}setQualityMode(e){e==="Performance"?(this.configuration.aoSamples=8,this.configuration.denoiseSamples=4,this.configuration.denoiseRadius=12):e==="Low"?(this.configuration.aoSamples=16,this.configuration.denoiseSamples=4,this.configuration.denoiseRadius=12):e==="Medium"?(this.configuration.aoSamples=16,this.configuration.denoiseSamples=8,this.configuration.denoiseRadius=12):e==="High"?(this.configuration.aoSamples=64,this.configuration.denoiseSamples=8,this.configuration.denoiseRadius=6):e==="Ultra"&&(this.configuration.aoSamples=64,this.configuration.denoiseSamples=16,this.configuration.denoiseRadius=6)}}Uint8Array.from(atob(_h),r=>r.charCodeAt(0));let Lc=new v_;class b_{constructor(e,t=!1){Wo(this,"onResize",()=>{let e=this.canvas;this.vp.canvas.width=e.offsetWidth,this.vp.canvas.height=e.offsetHeight,this.vp.canvas.dpr=Math.min(window.devicePixelRatio,2),this.vp.scene.width=window.innerWidth,this.vp.scene.height=window.innerHeight,this.renderer.setSize(this.vp.canvas.width,this.vp.canvas.height,!1);let t=4,n=this.vp.canvas.width/this.vp.canvas.height,i=this.vp.canvas.height/this.vp.canvas.width;n>i?i=1:n=1,this.camera.left=-t*n,this.camera.right=t*n,this.camera.top=t*i,this.camera.bottom=-t*i,this.camera.updateProjectionMatrix(),this.vp.scene=this.getViewSizeAtDepth()});this.canvas=e,this.vp={canvas:{width:e.offsetWidth,height:e.offsetHeight,dpr:Math.min(window.devicePixelRatio,1.5)},scene:{width:1,height:1},screen:{width:window.innerWidth,height:window.innerHeight}},this.renderer=new hh({antialias:!1,canvas:e,stencil:!1}),this.renderer.setSize(this.vp.canvas.width,this.vp.canvas.height,!1),this.renderer.setPixelRatio(this.vp.canvas.dpr);let n=4,i=this.vp.canvas.width/this.vp.canvas.height,s=this.vp.canvas.height/this.vp.canvas.width;if(i>s?s=1:i=1,this.camera=new Hs(-n*i,n*i,n*s,-n*s,.001,1e3),this.scene=new ro,this.clock=new Qv,this.disposed=!1,oo.workaroundEnabled=!0,t){const a=new d_(this.renderer);a.addPass(new c_(this.scene,this.camera));const o=new E_(this.scene,this.camera,this.vp.canvas.width,this.vp.canvas.height);o.configuration.aoRadius=.2,o.configuration.distanceFalloff=.5,o.configuration.intensity=20,o.configuration.color=new Ue(0,0,0),o.configuration.aoSamples=8,o.configuration.denoiseSamples=4,o.configuration.denoiseRadius=12,o.configuration.halfRes=!0,o.setQualityMode("Medium"),o.configuration.halfRes=!0,o.screenSpaceRadius=!0,a.addPass(o),this.composer=a}this.usePostProcess=t,this.addEvents()}addEvents(){window.addEventListener("resize",this.onResize)}dispose(){}getViewSizeAtDepth(e=0){const t=this.camera.fov*Math.PI/180,n=Math.abs((this.camera.position.z-e)*Math.tan(t/2)*2);return{width:n*this.camera.aspect,height:n}}init(){}render(){Lc.begin(),this.usePostProcess?this.composer.render():this.renderer.render(this.scene,this.camera),Lc.end()}}class w_ extends Qt{constructor(e,t,n,i,s){super(),this.type="RoundedBoxGeometry",s=isNaN(s)?1:Math.max(1,Math.floor(s)),e=isNaN(e)?1:e,t=isNaN(t)?1:t,n=isNaN(n)?1:n,i=isNaN(i)?.15:i,i=Math.min(i,Math.min(e,Math.min(t,Math.min(n)))/2);var a=e/2-i,o=t/2-i,l=n/2-i;this.parameters={width:e,height:t,depth:n,radius:i,radiusSegments:s};var c=s+1,u=c*s+1<<3,f=new ut(new Float32Array(u*3),3),h=new ut(new Float32Array(u*3),3),m=[],_=[];new I;var g=new I,p=[],d=[],v=[],x=c*s,S=c*s+1;y(),b(),w(),C(),E(),M();function y(){for(var D=[new I(1,1,1),new I(1,1,-1),new I(-1,1,-1),new I(-1,1,1),new I(1,-1,1),new I(1,-1,-1),new I(-1,-1,-1),new I(-1,-1,1)],P=0;P<8;P++)m.push([]),_.push([]);for(var U=Math.PI/2,G=new I(a,o,l),N=0;N<=s;N++){var q=N/s,Q=q*U,W=Math.cos(Q),B=Math.sin(Q);if(N==s){g.set(0,1,0);var z=g.clone().multiplyScalar(i).add(G);m[0].push(z),p.push(z);var J=g.clone();_[0].push(J),d.push(J);continue}for(var $=0;$<=s;$++){var ie=$/s,me=ie*U;g.x=W*Math.cos(me),g.y=B,g.z=W*Math.sin(me);var z=g.clone().multiplyScalar(i).add(G);m[0].push(z),p.push(z);var J=g.clone().normalize();_[0].push(J),d.push(J)}}for(var xe=1;xe<8;xe++)for(var P=0;P<m[0].length;P++){var z=m[0][P].clone().multiply(D[xe]);m[xe].push(z),p.push(z);var J=_[0][P].clone().multiply(D[xe]);_[xe].push(J),d.push(J)}}function w(){for(var D=[!0,!1,!0,!1,!1,!0,!1,!0],P=c*(s-1),U=0;U<8;U++){for(var G=S*U,N=0;N<s-1;N++)for(var q=N*c,Q=(N+1)*c,W=0;W<s;W++){var B=W+1,z=G+q+W,J=G+q+B,$=G+Q+W,ie=G+Q+B;D[U]?(v.push(z),v.push($),v.push(J),v.push(J),v.push($),v.push(ie)):(v.push(z),v.push(J),v.push($),v.push(J),v.push(ie),v.push($))}for(var W=0;W<s;W++){var z=G+P+W,J=G+P+W+1,$=G+x;D[U]?(v.push(z),v.push($),v.push(J)):(v.push(z),v.push(J),v.push($))}}}function b(){var D=x,P=x+S,U=x+S*2,G=x+S*3;v.push(D),v.push(P),v.push(U),v.push(D),v.push(U),v.push(G),D=x+S*4,P=x+S*5,U=x+S*6,G=x+S*7,v.push(D),v.push(U),v.push(P),v.push(D),v.push(G),v.push(U),D=0,P=S,U=S*4,G=S*5,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G),D=S*2,P=S*3,U=S*6,G=S*7,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G),D=s,P=s+S*3,U=s+S*4,G=s+S*7,v.push(D),v.push(P),v.push(U),v.push(P),v.push(G),v.push(U),D=s+S,P=s+S*2,U=s+S*5,G=s+S*6,v.push(D),v.push(U),v.push(P),v.push(P),v.push(U),v.push(G)}function C(){for(var D=0;D<4;D++)for(var P=D*S,U=4*S+P,G=D&!0,N=0;N<s;N++){var q=N+1,Q=P+N,W=P+q,B=U+N,z=U+q;G?(v.push(Q),v.push(B),v.push(W),v.push(W),v.push(B),v.push(z)):(v.push(Q),v.push(W),v.push(B),v.push(W),v.push(z),v.push(B))}}function M(){for(var D=[0,2,4,6],P=[1,3,5,7],U=0;U<4;U++)for(var G=S*D[U],N=S*P[U],q=1>=U,Q=0;Q<s;Q++){var W=Q*c,B=(Q+1)*c,z=G+W,J=G+B,$=N+W,ie=N+B;q?(v.push(z),v.push($),v.push(J),v.push(J),v.push($),v.push(ie)):(v.push(z),v.push(J),v.push($),v.push(J),v.push(ie),v.push($))}}function E(){for(var D=s-1,P=[0,1,4,5],U=[3,2,7,6],G=[0,1,1,0],N=0;N<4;N++)for(var q=P[N]*S,Q=U[N]*S,W=0;W<=D;W++){var B=q+s+W*c,z=q+(W!=D?s+(W+1)*c:S-1),J=Q+s+W*c,$=Q+(W!=D?s+(W+1)*c:S-1);G[N]?(v.push(B),v.push(J),v.push(z),v.push(z),v.push(J),v.push($)):(v.push(B),v.push(z),v.push(J),v.push(z),v.push($),v.push(J))}}for(var V=0,F=0;F<p.length;F++)f.setXYZ(V,p[F].x,p[F].y,p[F].z),h.setXYZ(V,d[F].x,d[F].y,d[F].z),V++;this.setIndex(new ut(new Uint16Array(v),1)),this.setAttribute("position",f),this.setAttribute("normal",h)}}class A_{
+  constructor(e = {}, t = null){
+    e.speed == null && (e.speed = 1.05);
+    e.frequency == null && (e.frequency = 1.2);
+    e.mouseSize == null && (e.mouseSize = 1.15);
+    e.rotationSpeed == null && (e.rotationSpeed = 0.85);
+    e.rotationAmmount == null && (e.rotationAmmount = 0.78);
+    e.mouseScaling == null && (e.mouseScaling = 0.18);
+    e.mouseIndent == null && (e.mouseIndent = 0.7);
+    e.color == null && (e.color = "#050505");
+    e.colorDegrade == null && (e.colorDegrade = 1.1);
+    e.shape == null && (e.shape = "square");
 
+    const CLICK_SLOTS = 6;
+    const GRID_SIZE = 22;
+    const TILE_SIZE = 1.25;
+    const GRID_WORLD = GRID_SIZE * TILE_SIZE;
 
-      uniform float uTime;
-      uniform float uAnimate;
-      uniform vec2 uPos0;
-      uniform vec2 uPos1;
-      uniform vec4 uConfig;
-      uniform vec4 uConfig2;
+    let n = new b_(document.querySelector("#canvas"), !1);
+    n.renderer.shadowMap.enabled = !0;
+    n.renderer.shadowMap.type = Uu;
+    n.scene.background = new Ue(65793);
+    n.camera.position.z = 40;
+    n.camera.position.y = 40;
+    n.camera.position.x = 40;
+    n.camera.lookAt(new I(0, 0, 0));
+    this.rendering = n;
 
-      float map(float value, float min1, float max1, float min2, float max2) {
-        return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
-        }
-      mat4 rotationMatrix(vec3 axis, float angle) {
-        axis = normalize(axis);
-        float s = sin(angle);
-        float c = cos(angle);
-        float oc = 1.0 - c;
-        
-        return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
-                    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
-                    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
-                    0.0,                                0.0,                                0.0,                                1.0);
+    let i = { value: 0 };
+
+    n.scene.add(new Yv(4210752, 2229773, 1.15));
+    n.scene.add(new jv(263172, 0.75));
+
+    let s = new Rc(6295832, 1.35);
+    n.scene.add(s);
+    s.position.set(-1, 0.7, 1.1);
+    s.position.multiplyScalar(11);
+
+    let a = new Rc(16777215, 3.25);
+    n.scene.add(a);
+    a.position.set(1.2, 0.8, 1);
+    a.position.multiplyScalar(10);
+    a.castShadow = !0;
+    a.shadow.camera.left = -10;
+    a.shadow.camera.right = 10;
+    a.shadow.camera.top = 10;
+    a.shadow.camera.bottom = -10;
+    a.shadow.camera.far = 40;
+    a.shadow.mapSize.width = 2048;
+    a.shadow.mapSize.height = 2048;
+
+    let o = GRID_SIZE;
+    let l = TILE_SIZE;
+    let c = GRID_WORLD;
+    let u = new w_(l, l, l, 0.1, 4);
+
+    if (typeof e.shape == "string") {
+      switch (e.shape) {
+        case "cylinder":
+          u = new Uo(l, l, l);
+          break;
+        case "torus":
+          u = new No(l * 0.5, l * 0.3);
+          break;
+        case "icosahedron":
+          u = new Fo(l, 0);
+          break;
+      }
+    } else {
+      u = e.shape;
     }
 
-    vec3 rotate(vec3 v, vec3 axis, float angle) {
-      mat4 m = rotationMatrix(axis, angle);
-      return (m * vec4(v, 1.0)).xyz;
+    let f = new qv({
+      color: e.color,
+      metalness: 0.22,
+      roughness: 0.7
+    });
+
+    let h = new Wv(u, f, o * o);
+    h.castShadow = !0;
+    h.receiveShadow = !0;
+
+    const baseColor = new Ue(e.color);
+    const baseVec = new I(baseColor.r, baseColor.g, baseColor.b);
+    const liftVec = new I(
+      Math.min(baseVec.x + 0.11, 0.18),
+      Math.min(baseVec.y + 0.09, 0.16),
+      Math.min(baseVec.z + 0.095, 0.17)
+    );
+
+    let _ = new I;
+    let g = new gt;
+    let p = 0;
+
+    for (let y = 0; y < o; y++) {
+      for (let w = 0; w < o; w++) {
+        g.position.set(y * l - c / 2 + l / 2, 0, w * l - c / 2 + l / 2);
+        g.updateMatrix();
+        h.setMatrixAt(p, g.matrix);
+
+        let b = Math.min(1, g.position.length() / (c * 0.72));
+        let C = Math.pow(Math.max(0, 1 - b), 1.65) * e.colorDegrade;
+        _.set(
+          Math.min(baseVec.x + liftVec.x * C, 0.2),
+          Math.min(baseVec.y + liftVec.y * C, 0.18),
+          Math.min(baseVec.z + liftVec.z * C, 0.19)
+        );
+        h.setColorAt(p, _);
+        p++;
+      }
     }
-    float sdSegment( in vec2 p, in vec2 a, in vec2 b )
-    {
-        vec2 pa = p-a, ba = b-a;
-        float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-        return length( pa - ba*h );
-    }
-        float cubicInOut(float t) {
-  return t < 0.5
-    ? 4.0 * t * t * t
-    : 0.5 * pow(2.0 * t - 2.0, 3.0) + 1.0;
+
+    const floor = new Kt(
+      new zs(c + l * 10, c + l * 10),
+      new Ro({ color: 2688525 })
+    );
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -l * 0.68;
+    n.scene.add(floor);
+
+    const clickUniforms = Array.from({ length: CLICK_SLOTS }, () => new ct(9999, 9999, -1000, 0));
+    let clickIndex = 0;
+
+    const shaderIntro = `#define GLSLIFY 1
+#define CLICK_SLOTS ${CLICK_SLOTS}
+
+uniform float uTime;
+uniform float uAnimate;
+uniform vec2 uPos0;
+uniform vec2 uPos1;
+uniform vec4 uConfig;
+uniform vec4 uConfig2;
+uniform float uTileSize;
+uniform vec4 uClickData[ CLICK_SLOTS ];
+
+float map(float value, float min1, float max1, float min2, float max2) {
+  return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
+mat4 rotationMatrix(vec3 axis, float angle) {
+  axis = normalize(axis);
+  float s = sin(angle);
+  float c = cos(angle);
+  float oc = 1.0 - c;
+
+  return mat4(
+    oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
+    oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
+    oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
+    0.0,                                0.0,                                0.0,                                1.0
+  );
 }
 
-        float cubicOut(float t) {
+vec3 rotate(vec3 v, vec3 axis, float angle) {
+  mat4 m = rotationMatrix(axis, angle);
+  return (m * vec4(v, 1.0)).xyz;
+}
+
+float sdSegment(in vec2 p, in vec2 a, in vec2 b) {
+  vec2 pa = p - a;
+  vec2 ba = b - a;
+  float h = clamp(dot(pa, ba) / max(dot(ba, ba), 0.0001), 0.0, 1.0);
+  return length(pa - ba * h);
+}
+
+float cubicInOut(float t) {
+  return t < 0.5 ? 4.0 * t * t * t : 0.5 * pow(2.0 * t - 2.0, 3.0) + 1.0;
+}
+
+float cubicOut(float t) {
   float f = t - 1.0;
   return f * f * f + 1.0;
 }
 
-      void main(){
-    `,x=`#define GLSLIFY 1
+float clickMask(vec2 center, vec2 tilePos, float size) {
+  float d = length(tilePos - center);
+  return 1.0 - smoothstep(size * 0.08, size * 0.38, d);
+}
 
+float keyboardPress(vec4 clickData, vec2 tilePos, float time, float size) {
+  float age = time - clickData.z;
+  if (clickData.z < 0.0 || age < 0.0 || age > 0.42) return 0.0;
 
-            vec4 position = instanceMatrix[3];
-            float toCenter = length(position.xz) ;
+  float mask = clickMask(clickData.xy, tilePos, size);
+  float press = 0.0;
 
-            // float mouseTrail = length(position.xz- uPos0.xy);
-            float mouseTrail = sdSegment(position.xz, uPos0, uPos1 );
-            mouseTrail = smoothstep(2.0, 5. * uConfig.z , mouseTrail)  ;
+  if (age < 0.07) {
+    float t = clamp(age / 0.07, 0.0, 1.0);
+    press = cubicOut(t);
+  } else if (age < 0.22) {
+    float t = clamp((age - 0.07) / 0.15, 0.0, 1.0);
+    press = 1.0 - t;
+  } else {
+    float t = clamp((age - 0.22) / 0.20, 0.0, 1.0);
+    press = -sin(t * 3.14159265) * 0.10 * (1.0 - t);
+  }
 
-            // Mouse Scale
-            transformed *= 1. + cubicOut(1.0-mouseTrail) * uConfig2.y;
+  return press * mask;
+}
 
-            // Instance Animation
-            float start = 0. + toCenter * 0.02;
-            float end = start+  (toCenter + 1.5) * 0.06;
-            float anim = (map(clamp(uAnimate, start,end) , start, end, 0., 1.));
+void main(){`;
 
-            transformed = rotate(transformed, vec3(0., 1., 1. ),uConfig2.x * (anim * 3.14+  uTime * uConfig.x + toCenter * 0.4 * uConfig.w) );
+    const shaderProject = `#define GLSLIFY 1
 
-            // Mouse Offset
-            transformed.y += (-1.0 * (1.-mouseTrail)) * uConfig2.z;
+vec4 position = instanceMatrix[3];
+float toCenter = length(position.xz);
 
-            transformed.xyz *= cubicInOut(anim);
-            transformed.y += cubicInOut(1.-anim) * 1.;
+float mouseTrail = sdSegment(position.xz, uPos0, uPos1);
+mouseTrail = smoothstep(2.0, 5.0 * uConfig.z, mouseTrail);
 
-            transformed.y += sin(uTime * 2. * uConfig.x + toCenter * uConfig.y) * 0.1;
+transformed *= 1.0 + cubicOut(1.0 - mouseTrail) * uConfig2.y;
 
-            vec4 mvPosition = vec4( transformed, 1.0 );
+float start = 0.0 + toCenter * 0.02;
+float end = start + (toCenter + 1.5) * 0.06;
+float anim = map(clamp(uAnimate, start, end), start, end, 0.0, 1.0);
 
-            #ifdef USE_INSTANCING
+transformed = rotate(
+  transformed,
+  vec3(0.0, 1.0, 1.0),
+  uConfig2.x * (anim * 3.14159265 + uTime * uConfig.x + toCenter * 0.4 * uConfig.w)
+);
 
-              mvPosition = instanceMatrix * mvPosition;
+transformed.y += (-1.0 * (1.0 - mouseTrail)) * uConfig2.z;
 
-            #endif
+transformed.xyz *= cubicInOut(anim);
+transformed.y += cubicInOut(1.0 - anim) * 1.0;
+transformed.y += sin(uTime * 2.0 * uConfig.x + toCenter * uConfig.y) * 0.1;
 
-            mvPosition = modelViewMatrix * mvPosition;
+float pressDepth = 0.0;
+for (int i = 0; i < CLICK_SLOTS; i++) {
+  pressDepth += keyboardPress(uClickData[i], position.xz, uTime, uTileSize);
+}
+float pressDown = max(pressDepth, 0.0);
+float pressUp = max(-pressDepth, 0.0);
+transformed.y *= 1.0 - pressDown * 0.24;
+transformed.y -= pressDown * 0.22;
+transformed.y += pressUp * 0.05;
 
-            gl_Position = projectionMatrix * mvPosition;
-    `,S={uTime:i,uPos0:{value:new pe},uPos1:{value:new pe},uAnimate:{value:0},uConfig:{value:new ct(e.speed,e.frequency,e.mouseSize,e.rotationSpeed)},uConfig2:{value:new ct(e.rotationAmmount,e.mouseScaling,e.mouseIndent)}};h.material.onBeforeCompile=F=>{F.vertexShader=F.vertexShader.replace("void main() {",v),F.vertexShader=F.vertexShader.replace("#include <project_vertex>",x),F.uniforms={...F.uniforms,...S}},h.customDepthMaterial=new uh,h.customDepthMaterial.onBeforeCompile=F=>{F.vertexShader=F.vertexShader.replace("void main() {",v),F.vertexShader=F.vertexShader.replace("#include <project_vertex>",x),F.uniforms={...F.uniforms,...S}},h.customDepthMaterial.depthPacking=qu,n.scene.add(h);let y=Za.timeline();y.to(S.uAnimate,{value:1,duration:3,ease:"none"},0),t&&y.from(t.scale,{x:0,y:0,z:0,duration:1,ease:"back.out"},1),this.animation=y;const w=new Kt(new zs,new Ro);w.scale.setScalar(20),w.rotation.x=-Math.PI/2,w.updateMatrix(),w.updateMatrixWorld();let b=new Jv,C=new pe,M=new pe;window.addEventListener("mousemove",F=>{const Y=n.canvas.getBoundingClientRect();let D=(F.clientX-Y.left)/Y.width-.5,P=(F.clientY-Y.top)/Y.height-.5;D=Math.max(-.5,Math.min(.5,D)),P=Math.max(-.5,Math.min(.5,P)),M.x=D*2,M.y=-P*2,b.setFromCamera(M,n.camera);let U=b.intersectObject(w);if(U.length>0){let G=U[0];C.x=G.point.x,C.y=G.point.z}});let E=new pe;const V=(F,D)=>{i.value=F;let P=new pe;P.copy(C),P.sub(S.uPos0.value),P.multiplyScalar(.08),S.uPos0.value.add(P),P.copy(S.uPos0.value),P.sub(S.uPos1.value),P.multiplyScalar(.05),P.sub(E),P.multiplyScalar(.05),E.add(P),S.uPos1.value.add(E),t&&(t.position.x=S.uPos0.value.x,t.position.z=S.uPos0.value.y,t.rotation.x=F,t.rotation.y=F),n.render()};Za.ticker.add(V)}}window.InstancedMouseEffect=A_;
+vec4 mvPosition = vec4(transformed, 1.0);
+
+#ifdef USE_INSTANCING
+  mvPosition = instanceMatrix * mvPosition;
+#endif
+
+mvPosition = modelViewMatrix * mvPosition;
+gl_Position = projectionMatrix * mvPosition;
+`;
+
+    const uniforms = {
+      uTime: i,
+      uPos0: { value: new pe() },
+      uPos1: { value: new pe() },
+      uAnimate: { value: 0 },
+      uConfig: { value: new ct(e.speed, e.frequency, e.mouseSize, e.rotationSpeed) },
+      uConfig2: { value: new ct(e.rotationAmmount, e.mouseScaling, e.mouseIndent, 0) },
+      uTileSize: { value: l },
+      uClickData: { value: clickUniforms }
+    };
+
+    h.material.onBeforeCompile = (F) => {
+      F.vertexShader = F.vertexShader.replace("void main() {", shaderIntro);
+      F.vertexShader = F.vertexShader.replace("#include <project_vertex>", shaderProject);
+      F.uniforms = { ...F.uniforms, ...uniforms };
+    };
+
+    h.customDepthMaterial = new uh;
+    h.customDepthMaterial.onBeforeCompile = (F) => {
+      F.vertexShader = F.vertexShader.replace("void main() {", shaderIntro);
+      F.vertexShader = F.vertexShader.replace("#include <project_vertex>", shaderProject);
+      F.uniforms = { ...F.uniforms, ...uniforms };
+    };
+    h.customDepthMaterial.depthPacking = qu;
+
+    n.scene.add(h);
+
+    let y = Za.timeline();
+    y.to(uniforms.uAnimate, { value: 1, duration: 3, ease: "none" }, 0);
+    t && y.from(t.scale, { x: 0, y: 0, z: 0, duration: 1, ease: "back.out" }, 1);
+    this.animation = y;
+
+    let raycaster = new Jv;
+    let mouseNdc = new pe;
+    let mouseTarget = new pe;
+    let vel = new pe;
+    let v3 = new pe;
+    let tempMatrix = new Ne;
+    let tempPosition = new I;
+
+    const hitplane = new Kt(
+      new zs(),
+      new Ro()
+    );
+    hitplane.scale.setScalar(20);
+    hitplane.rotation.x = -Math.PI / 2;
+    hitplane.updateMatrix();
+    hitplane.updateMatrixWorld();
+
+    const snap = (value) => {
+      const origin = -c / 2 + l / 2;
+      return origin + Math.round((value - origin) / l) * l;
+    };
+
+    const updatePointer = (event) => {
+      const rect = n.canvas.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+      mouseNdc.x = x * 2;
+      mouseNdc.y = -y * 2;
+      raycaster.setFromCamera(mouseNdc, n.camera);
+
+      const hits = raycaster.intersectObject(hitplane);
+      if (hits.length > 0) {
+        mouseTarget.x = hits[0].point.x;
+        mouseTarget.y = hits[0].point.z;
+      }
+    };
+
+    const pushClick = (x, z, time) => {
+      clickUniforms[clickIndex].set(x, z, time, 1);
+      clickIndex = (clickIndex + 1) % CLICK_SLOTS;
+    };
+
+    const pressTile = (event) => {
+      const rect = n.canvas.getBoundingClientRect();
+      mouseNdc.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseNdc.y = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
+      raycaster.setFromCamera(mouseNdc, n.camera);
+      const hits = raycaster.intersectObject(h);
+      if (hits.length > 0) {
+        const hit = hits[0];
+        if (hit.instanceId != null && h.getMatrixAt) {
+          h.getMatrixAt(hit.instanceId, tempMatrix);
+          tempPosition.setFromMatrixPosition(tempMatrix);
+          pushClick(tempPosition.x, tempPosition.z, i.value);
+        } else {
+          pushClick(snap(mouseTarget.x), snap(mouseTarget.y), i.value);
+        }
+      }
+    };
+
+    n.canvas.addEventListener("pointermove", updatePointer, { passive: !0 });
+    n.canvas.addEventListener("pointerdown", pressTile, { passive: !0 });
+
+    const V = (F) => {
+      i.value = F;
+
+      v3.copy(mouseTarget);
+      v3.sub(uniforms.uPos0.value);
+      v3.multiplyScalar(0.08);
+      uniforms.uPos0.value.add(v3);
+
+      v3.copy(uniforms.uPos0.value);
+      v3.sub(uniforms.uPos1.value);
+      v3.multiplyScalar(0.05);
+
+      v3.sub(vel);
+      v3.multiplyScalar(0.05);
+      vel.add(v3);
+
+      uniforms.uPos1.value.add(vel);
+
+      t && (
+        t.position.x = uniforms.uPos0.value.x,
+        t.position.z = uniforms.uPos0.value.y,
+        t.rotation.x = F,
+        t.rotation.y = F
+      );
+
+      n.render();
+    };
+
+    Za.ticker.add(V);
+  }
+}
+window.InstancedMouseEffect = A_;
 
 </script>
 <script>
@@ -4762,8 +5058,11 @@ void main() {
     frequency: 1,
     mouseSize: 1,
     rotationSpeed: 1,
-    color: '#1084ff',
-    colorDegrade: 1.5,
+    rotationAmmount: 0,
+    mouseScaling: 0,
+    mouseIndent: 1,
+    color: '#050505',
+    colorDegrade: 1.1,
     shape: 'square'
   });
 })();
