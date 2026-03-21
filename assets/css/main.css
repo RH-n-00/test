@@ -228,7 +228,7 @@ body::after{
   font-weight:700;
   letter-spacing:0.16em;
   color:#fff;
-  background:linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+  background:linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 75%);
   border:1.5px solid transparent;
   border-radius:40px;
   backdrop-filter:blur(30px);
