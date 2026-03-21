@@ -4364,6 +4364,11 @@ void main() {
       }
     }
 
+    const whiteIndex = Math.floor(Math.random() * (o * o));
+    const whiteBoost = 1.08 / Math.max(baseVec.x, baseVec.y, baseVec.z, 0.0001);
+    h.setColorAt(whiteIndex, new I(whiteBoost, whiteBoost, whiteBoost));
+    h.instanceColor && (h.instanceColor.needsUpdate = !0);
+
     const floor = new Kt(
       new zs(c + l * 10, c + l * 10),
       new Ro({ color: 2688525 })
