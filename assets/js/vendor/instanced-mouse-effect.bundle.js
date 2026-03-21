@@ -4326,7 +4326,8 @@ void main() {
     }
 
     let f = new qv({
-      color: e.color,
+      color: 16777215,
+      vertexColors: !0,
       metalness: 0.22,
       roughness: 0.7
     });
@@ -4342,7 +4343,7 @@ void main() {
       Math.min(baseVec.y + 0.09, 0.16),
       Math.min(baseVec.z + 0.095, 0.17)
     );
-    const whiteColor = new Ue(1.34, 1.38, 1.46);
+    const whiteColor = new Ue(1, 1, 1);
     const baseColors = [];
     const tileCenters = [];
 
@@ -4370,6 +4371,8 @@ void main() {
     }
 
     let activeIndex = Math.floor(Math.random() * tileCenters.length);
+    h.setColorAt(activeIndex, whiteColor);
+    h.instanceColor && (h.instanceColor.needsUpdate = !0);
 
     const floor = new Kt(
       new zs(c + l * 10, c + l * 10),
@@ -4445,7 +4448,7 @@ float tileMask(vec2 center, vec2 tilePos, float size) {
 
 float clickMask(vec2 center, vec2 tilePos, float size) {
   float d = length(tilePos - center);
-  return 1.0 - smoothstep(size * 0.08, size * 0.36, d);
+  return 1.0 - smoothstep(size * 0.06, size * 0.24, d);
 }
 
 float flipWave(vec3 localPos, float size) {
@@ -4455,20 +4458,20 @@ float flipWave(vec3 localPos, float size) {
 
 float keyboardPress(vec4 clickData, vec2 tilePos, float time, float size) {
   float age = time - clickData.z;
-  if (clickData.z < 0.0 || age < 0.0 || age > 0.92) return 0.0;
+  if (clickData.z < 0.0 || age < 0.0 || age > 0.86) return 0.0;
 
   float mask = clickMask(clickData.xy, tilePos, size);
   float press = 0.0;
 
   if (age < 0.22) {
     float t = clamp(age / 0.22, 0.0, 1.0);
-    press = quartOut(t);
-  } else if (age < 0.58) {
-    float t = clamp((age - 0.22) / 0.36, 0.0, 1.0);
+    press = cubicOut(t);
+  } else if (age < 0.60) {
+    float t = clamp((age - 0.22) / 0.38, 0.0, 1.0);
     press = mix(1.0, 0.0, sineInOut(t));
   } else {
-    float t = clamp((age - 0.58) / 0.34, 0.0, 1.0);
-    press = -sin(t * 3.14159265) * 0.19 * (1.0 - t * 0.14);
+    float t = clamp((age - 0.60) / 0.26, 0.0, 1.0);
+    press = -sin(t * 3.14159265) * 0.20 * (1.0 - t * 0.25);
   }
 
   return press * mask;
@@ -4486,15 +4489,19 @@ float pointerLen = length(pointerDelta);
 vec2 pointerDir = pointerLen > 0.0001 ? normalize(pointerDelta) : vec2(0.0, 1.0);
 vec2 relMouse = position.xz - uPos0;
 float distMouse = length(relMouse);
-float hoverRadius = uTileSize * (0.55 + uConfig.z * 0.35);
-float hoverCore = exp(-pow(distMouse / max(hoverRadius, 0.0001), 2.0));
+float hoverRadius = uTileSize * (0.30 + uConfig.z * 0.14);
+float hoverCore = 1.0 - smoothstep(hoverRadius * 0.12, hoverRadius, distMouse);
+hoverCore = pow(max(hoverCore, 0.0), 1.9);
 float trailSide = abs(dot(relMouse, vec2(-pointerDir.y, pointerDir.x)));
-float trailAlong = clamp(dot(relMouse, -pointerDir), 0.0, uTileSize * 1.8);
-float trailBody = exp(-pow(trailSide / max(uTileSize * 0.46, 0.0001), 2.0));
-float hoverTrail = trailBody * (1.0 - trailAlong / (uTileSize * 1.8)) * clamp(pointerLen * 12.0, 0.0, 1.0) * 0.22;
+float trailAlongRaw = dot(relMouse, -pointerDir);
+float trailHead = 1.0 - smoothstep(-uTileSize * 0.10, uTileSize * 1.15, trailAlongRaw);
+float trailTail = smoothstep(-uTileSize * 0.05, uTileSize * 0.42, trailAlongRaw);
+float trailAlong = clamp(trailHead * trailTail, 0.0, 1.0);
+float trailBody = 1.0 - smoothstep(uTileSize * 0.14, uTileSize * 0.34, trailSide);
+float hoverTrail = trailAlong * trailBody * clamp(pointerLen * 16.0, 0.0, 1.0) * 0.10;
 float hoverPress = clamp(hoverCore + hoverTrail, 0.0, 1.0);
 
-transformed *= 1.0 + cubicOut(hoverPress) * uConfig2.y * 0.45;
+transformed *= 1.0 + cubicOut(hoverPress) * uConfig2.y * 0.16;
 
 float start = 0.0 + toCenter * 0.02;
 float end = start + (toCenter + 1.5) * 0.06;
@@ -4506,15 +4513,15 @@ transformed = rotate(
   uConfig2.x * (anim * 3.14159265 + uTime * uConfig.x + toCenter * 0.4 * uConfig.w)
 );
 
-transformed.y -= hoverPress * uConfig2.z * 0.34;
+transformed.y -= hoverPress * uConfig2.z * 0.16;
 
 transformed.xyz *= cubicInOut(anim);
 transformed.y += cubicInOut(1.0 - anim) * 1.0;
 transformed.y += sin(uTime * 2.0 * uConfig.x + toCenter * uConfig.y) * 0.1;
 
 float activeMask = tileMask(uActiveTile, position.xz, uTileSize);
-transformed.y += activeMask * 0.065;
-transformed *= 1.0 + activeMask * 0.026;
+transformed.y += activeMask * 0.06;
+transformed *= 1.0 + activeMask * 0.018;
 
 float swapProgress = clamp((uTime - uSwapData.x) / max(uSwapData.y, 0.0001), 0.0, 1.0);
 float swapActive = uSwapData.z;
@@ -4539,11 +4546,10 @@ for (int i = 0; i < CLICK_SLOTS; i++) {
 }
 float pressDown = max(pressDepth, 0.0);
 float pressUp = max(-pressDepth, 0.0);
-transformed.xz *= 1.0 + pressDown * 0.05;
-transformed.y *= 1.0 - pressDown * 0.22;
+transformed.xz *= 1.0 + pressDown * 0.016 - pressUp * 0.006;
+transformed.y *= 1.0 - pressDown * 0.11;
 transformed.y -= pressDown * 0.14;
-transformed.xz *= 1.0 - pressUp * 0.02;
-transformed.y += pressUp * 0.14;
+transformed.y += pressUp * 0.08;
 
 vec4 mvPosition = vec4(transformed, 1.0);
 
@@ -4595,18 +4601,6 @@ gl_Position = projectionMatrix * mvPosition;
       uniforms.uActiveTile.value.copy(tileCenters[activeIndex]);
     };
 
-    const setActiveIndex = (index, restorePrevious = !0) => {
-      if (restorePrevious && activeIndex >= 0 && activeIndex < baseColors.length && activeIndex !== index) {
-        applyInstanceColor(activeIndex, baseColors[activeIndex]);
-      }
-
-      activeIndex = index;
-      applyInstanceColor(activeIndex, whiteColor);
-      refreshActiveUniform();
-    };
-
-    setActiveIndex(activeIndex, !1);
-
     const swapState = {
       active: !1,
       switched: !1,
@@ -4646,17 +4640,19 @@ gl_Position = projectionMatrix * mvPosition;
 
     let raycaster = new Jv;
     let mouseNdc = new pe;
-    let mouseTarget = new pe;
+    let mouseTarget = new pe(9999, 9999);
     let vel = new pe;
     let v3 = new pe;
     let tempMatrix = new Ne;
     let tempPosition = new I;
+    uniforms.uPos0.value.set(9999, 9999);
+    uniforms.uPos1.value.set(9999, 9999);
 
     const hitplane = new Kt(
       new zs(),
       new Ro()
     );
-    hitplane.scale.setScalar(20);
+    hitplane.scale.set(c + l * 14, c + l * 14, 1);
     hitplane.rotation.x = -Math.PI / 2;
     hitplane.updateMatrix();
     hitplane.updateMatrixWorld();
@@ -4666,8 +4662,21 @@ gl_Position = projectionMatrix * mvPosition;
       return origin + Math.round((value - origin) / l) * l;
     };
 
+    const resetPointer = () => {
+      mouseTarget.set(9999, 9999);
+      uniforms.uPos0.value.set(9999, 9999);
+      uniforms.uPos1.value.set(9999, 9999);
+      vel.set(0, 0);
+    };
+
     const updatePointer = (event) => {
       const rect = n.canvas.getBoundingClientRect();
+      const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+      if (!inside) {
+        resetPointer();
+        return;
+      }
+
       const x = (event.clientX - rect.left) / rect.width - 0.5;
       const y = (event.clientY - rect.top) / rect.height - 0.5;
 
@@ -4679,6 +4688,8 @@ gl_Position = projectionMatrix * mvPosition;
       if (hits.length > 0) {
         mouseTarget.x = hits[0].point.x;
         mouseTarget.y = hits[0].point.z;
+      } else {
+        resetPointer();
       }
     };
 
@@ -4706,7 +4717,10 @@ gl_Position = projectionMatrix * mvPosition;
       }
     };
 
-    n.canvas.addEventListener("pointermove", updatePointer, { passive: !0 });
+    const pointerScope = n.canvas.parentElement || n.canvas;
+    pointerScope.addEventListener("pointermove", updatePointer, { passive: !0 });
+    pointerScope.addEventListener("pointerleave", resetPointer, { passive: !0 });
+    pointerScope.addEventListener("pointercancel", resetPointer, { passive: !0 });
     n.canvas.addEventListener("pointerdown", pressTile, { passive: !0 });
 
     const V = (F) => {
@@ -4732,7 +4746,10 @@ gl_Position = projectionMatrix * mvPosition;
         const halfway = swapState.duration * 0.5;
 
         if (!swapState.switched && elapsed >= halfway) {
-          setActiveIndex(swapState.toIndex);
+          applyInstanceColor(swapState.fromIndex, baseColors[swapState.fromIndex]);
+          activeIndex = swapState.toIndex;
+          applyInstanceColor(activeIndex, whiteColor);
+          refreshActiveUniform();
           swapState.switched = !0;
         }
 
