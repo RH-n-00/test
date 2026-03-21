@@ -228,7 +228,7 @@ body::after{
   font-weight:700;
   letter-spacing:0.16em;
   color:#fff;
-  background:linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  background:linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
   border:1.5px solid transparent;
   border-radius:40px;
   backdrop-filter:blur(30px);
@@ -249,11 +249,11 @@ body::after{
   border-radius:40px;
   padding:1.5px;
   background:linear-gradient(135deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(138, 43, 226, 0.4) 25%,
-    rgba(0, 191, 255, 0.4) 50%,
-    rgba(255, 105, 180, 0.4) 75%,
-    rgba(255, 255, 255, 0.4) 100%);
+    rgba(255,255,255,0.45) 0%,
+    rgba(210,220,230,0.45) 25%,
+    rgba(170,190,210,0.45) 50%,
+    rgba(240,245,255,0.45) 75%,
+    rgba(255,255,255,0.45) 100%);
   background-size:200% 200%;
   -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite:xor;
@@ -276,7 +276,7 @@ body::after{
   transition:opacity 0.5s ease;
 }
 .glass-button:hover{
-  background:linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background:linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, rgba(255, 255, 255, 0.03) 100%);
   box-shadow:
     0 12px 48px rgba(138, 43, 226, 0.3),
     0 0 80px rgba(0, 191, 255, 0.2),
