@@ -4342,7 +4342,7 @@ void main() {
       Math.min(baseVec.y + 0.09, 0.16),
       Math.min(baseVec.z + 0.095, 0.17)
     );
-    const whiteColor = new Ue(1, 1, 1);
+    const whiteColor = new Ue(1.34, 1.38, 1.46);
     const baseColors = [];
     const tileCenters = [];
 
@@ -4370,8 +4370,6 @@ void main() {
     }
 
     let activeIndex = Math.floor(Math.random() * tileCenters.length);
-    h.setColorAt(activeIndex, whiteColor);
-    h.instanceColor && (h.instanceColor.needsUpdate = !0);
 
     const floor = new Kt(
       new zs(c + l * 10, c + l * 10),
@@ -4457,20 +4455,20 @@ float flipWave(vec3 localPos, float size) {
 
 float keyboardPress(vec4 clickData, vec2 tilePos, float time, float size) {
   float age = time - clickData.z;
-  if (clickData.z < 0.0 || age < 0.0 || age > 0.68) return 0.0;
+  if (clickData.z < 0.0 || age < 0.0 || age > 0.92) return 0.0;
 
   float mask = clickMask(clickData.xy, tilePos, size);
   float press = 0.0;
 
-  if (age < 0.16) {
-    float t = clamp(age / 0.16, 0.0, 1.0);
+  if (age < 0.22) {
+    float t = clamp(age / 0.22, 0.0, 1.0);
     press = quartOut(t);
-  } else if (age < 0.42) {
-    float t = clamp((age - 0.16) / 0.26, 0.0, 1.0);
+  } else if (age < 0.58) {
+    float t = clamp((age - 0.22) / 0.36, 0.0, 1.0);
     press = mix(1.0, 0.0, sineInOut(t));
   } else {
-    float t = clamp((age - 0.42) / 0.26, 0.0, 1.0);
-    press = -sin(t * 3.14159265) * 0.16 * (1.0 - t * 0.35);
+    float t = clamp((age - 0.58) / 0.34, 0.0, 1.0);
+    press = -sin(t * 3.14159265) * 0.19 * (1.0 - t * 0.14);
   }
 
   return press * mask;
@@ -4515,8 +4513,8 @@ transformed.y += cubicInOut(1.0 - anim) * 1.0;
 transformed.y += sin(uTime * 2.0 * uConfig.x + toCenter * uConfig.y) * 0.1;
 
 float activeMask = tileMask(uActiveTile, position.xz, uTileSize);
-transformed.y += activeMask * 0.035;
-transformed *= 1.0 + activeMask * 0.012;
+transformed.y += activeMask * 0.065;
+transformed *= 1.0 + activeMask * 0.026;
 
 float swapProgress = clamp((uTime - uSwapData.x) / max(uSwapData.y, 0.0001), 0.0, 1.0);
 float swapActive = uSwapData.z;
@@ -4541,9 +4539,11 @@ for (int i = 0; i < CLICK_SLOTS; i++) {
 }
 float pressDown = max(pressDepth, 0.0);
 float pressUp = max(-pressDepth, 0.0);
-transformed.y *= 1.0 - pressDown * 0.18;
-transformed.y -= pressDown * 0.18;
-transformed.y += pressUp * 0.1;
+transformed.xz *= 1.0 + pressDown * 0.05;
+transformed.y *= 1.0 - pressDown * 0.22;
+transformed.y -= pressDown * 0.14;
+transformed.xz *= 1.0 - pressUp * 0.02;
+transformed.y += pressUp * 0.14;
 
 vec4 mvPosition = vec4(transformed, 1.0);
 
@@ -4594,6 +4594,18 @@ gl_Position = projectionMatrix * mvPosition;
     const refreshActiveUniform = () => {
       uniforms.uActiveTile.value.copy(tileCenters[activeIndex]);
     };
+
+    const setActiveIndex = (index, restorePrevious = !0) => {
+      if (restorePrevious && activeIndex >= 0 && activeIndex < baseColors.length && activeIndex !== index) {
+        applyInstanceColor(activeIndex, baseColors[activeIndex]);
+      }
+
+      activeIndex = index;
+      applyInstanceColor(activeIndex, whiteColor);
+      refreshActiveUniform();
+    };
+
+    setActiveIndex(activeIndex, !1);
 
     const swapState = {
       active: !1,
@@ -4720,10 +4732,7 @@ gl_Position = projectionMatrix * mvPosition;
         const halfway = swapState.duration * 0.5;
 
         if (!swapState.switched && elapsed >= halfway) {
-          applyInstanceColor(swapState.fromIndex, baseColors[swapState.fromIndex]);
-          activeIndex = swapState.toIndex;
-          applyInstanceColor(activeIndex, whiteColor);
-          refreshActiveUniform();
+          setActiveIndex(swapState.toIndex);
           swapState.switched = !0;
         }
 
