@@ -3,6 +3,7 @@
   const profileButton = document.getElementById('profileButton');
   const profileModal = document.getElementById('profileModal');
   const profileClose = document.getElementById('profileClose');
+  const profileTranslateButton = document.getElementById('profileTranslateButton');
 
   const signInButton = document.getElementById('signInButton');
   const signInModal = document.getElementById('signInModal');
@@ -16,6 +17,26 @@
   const signalOutput = document.getElementById('signalOutput');
   const signalHint = document.getElementById('signalHint');
   const translateButton = document.getElementById('translateButton');
+
+  const profileCopy = {
+    chipPrimary: { en: 'SIS CHARACTER DOSSIER', ko: 'SIS 인물 기록' },
+    chipSecondary: { en: 'LEVEL 4 / INTERNAL', ko: '4등급 / 내부 열람' },
+    kicker: { en: 'Filed Profile', ko: '등록 프로필' },
+    name: { en: 'Noel Hale', ko: '노엘 헤일' },
+    subtitle: { en: 'Field Asset Overview / Psychological Readout', ko: '현장 자산 개요 / 심리 판독' },
+    labelAge: { en: 'Age', ko: '나이' },
+    valueAge: { en: '34', ko: '34' },
+    labelNationality: { en: 'Nationality', ko: '국적' },
+    valueNationality: { en: 'British', ko: '영국' },
+    labelPosition: { en: 'Position', ko: '직위' },
+    valuePosition: { en: 'MI6 Senior HUMINT Case Officer', ko: 'MI6 선임 HUMINT 담당관' },
+    labelOrigin: { en: 'Origin', ko: '출신' },
+    valueOrigin: { en: 'London, England', ko: '영국 잉글랜드 런던' },
+    sectionBackgroundLabel: { en: 'Background', ko: '성장 배경' },
+    sectionBackgroundText: { en: 'Raised between the rigid standards of an orchestra conductor father and a London auction-house curator mother, he learned composure before warmth. Precision, restraint, and immaculate control were treated as necessities, not virtues. What remains on the surface is elegance. What survives underneath is a man who was trained to read others long before he was allowed to understand himself.', ko: '오케스트라 지휘자인 아버지와 런던 경매 하우스 큐레이터인 어머니 사이에서 자라며, 그는 따뜻함보다 먼저 절제를 배웠다. 정확함과 자제, 완벽한 통제는 미덕이 아니라 필수로 여겨졌다. 표면에 남은 것은 우아함이지만, 그 아래에 남은 것은 자기 자신을 이해하도록 허락받기도 전에 타인을 읽는 법부터 훈련된 남자다.' },
+    sectionImpressionLabel: { en: 'Impression', ko: '인상' },
+    sectionImpressionText: { en: 'Calm, immaculate, and difficult to penetrate. He leaves the impression of still water at midnight: polished, silent, and far deeper than first contact suggests.', ko: '차분하고, 흠잡을 데 없으며, 쉽게 속내를 드러내지 않는다. 그는 자정의 고요한 물처럼 보인다. 정제되어 있고, 침묵 속에 있으며, 처음 마주한 순간보다 훨씬 깊다.' }
+  };
 
   const verificationMessages = [
     'Establishing internal relay...',
@@ -43,6 +64,7 @@
   let verifyTimer = null;
   let typingTimer = null;
   let signalMode = 'morse';
+  let profileLanguage = 'en';
 
   heroButtons.forEach((button) => {
     button.addEventListener('mousemove', (e) => {
@@ -53,6 +75,25 @@
       button.style.setProperty('--y', y + '%');
     });
   });
+
+  const setProfileLanguage = (lang = 'en') => {
+    document.querySelectorAll('[data-profile-copy]').forEach((element) => {
+      const key = element.dataset.profileCopy;
+      const copy = profileCopy[key];
+      if (!copy || !copy[lang]) return;
+      element.textContent = copy[lang];
+    });
+
+    profileLanguage = lang;
+
+    if (profileTranslateButton) {
+      const isKorean = lang === 'ko';
+      profileTranslateButton.textContent = isKorean ? '원문' : '번역';
+      profileTranslateButton.classList.toggle('is-active', isKorean);
+      profileTranslateButton.setAttribute('aria-pressed', String(isKorean));
+      profileTranslateButton.setAttribute('aria-label', isKorean ? '영문으로 보기' : '한글로 번역');
+    }
+  };
 
   const updateBodyModalState = () => {
     const anyOpen = [profileModal, signInModal].some((modal) => modal?.classList.contains('is-open'));
@@ -131,6 +172,10 @@
     typingTimer = window.setTimeout(step, 180);
   };
 
+  const resetProfileModal = () => {
+    setProfileLanguage('en');
+  };
+
   const resetSignInModal = () => {
     stopSignInTimers();
     signInForm?.reset();
@@ -153,8 +198,15 @@
     }
   };
 
-  const openProfile = () => openModal(profileModal);
-  const closeProfile = () => closeModal(profileModal);
+  const openProfile = () => {
+    resetProfileModal();
+    openModal(profileModal);
+  };
+
+  const closeProfile = () => {
+    closeModal(profileModal);
+    resetProfileModal();
+  };
 
   const openSignIn = () => {
     resetSignInModal();
@@ -203,6 +255,9 @@
 
   profileButton?.addEventListener('click', openProfile);
   profileClose?.addEventListener('click', closeProfile);
+  profileTranslateButton?.addEventListener('click', () => {
+    setProfileLanguage(profileLanguage === 'en' ? 'ko' : 'en');
+  });
   signInButton?.addEventListener('click', openSignIn);
   signInClose?.addEventListener('click', closeSignIn);
 
@@ -240,6 +295,8 @@
     }
     if (profileModal?.classList.contains('is-open')) closeProfile();
   });
+
+  resetProfileModal();
 
   new InstancedMouseEffect({
     speed: 1,
