@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HALE / SIS INTERNAL NETWORK</title>
 <link rel="stylesheet" href="assets/css/main.css" />
-
 </head>
 <body>
   <main class="shell">
@@ -32,7 +31,7 @@
             <p class="hero-tagline">SIS: SECRET INTELLIGENCE SERVICE<br>SEMPER OCCULTUS</p>
 
             <div class="hero-buttons">
-              <button class="glass-button" type="button">
+              <button class="glass-button" id="profileButton" type="button" aria-haspopup="dialog" aria-controls="profileModal">
                 <span class="hero-shimmer"></span>
                 <span>PROFILE</span>
               </button>
@@ -47,8 +46,64 @@
     </section>
   </main>
 
+  <!-- Replace the profile fields below with your own character data. -->
+  <div class="profile-modal-overlay" id="profileModal" aria-hidden="true">
+    <section class="profile-modal profile-modal--dossier" role="dialog" aria-modal="true" aria-labelledby="profileTitleV1">
+      <button class="profile-modal-close" id="profileClose" type="button" aria-label="프로필 닫기">×</button>
+
+      <div class="profile-modal-head">
+        <span class="profile-chip">SIS CHARACTER DOSSIER</span>
+        <span class="profile-chip profile-chip--soft">LEVEL 4 / INTERNAL</span>
+      </div>
+
+      <div class="profile-modal-body">
+        <div class="profile-heading-block">
+          <p class="profile-kicker">Filed Profile</p>
+          <h2 class="profile-name" id="profileTitleV1">Noel Hale</h2>
+          <p class="profile-subtitle">Field Asset Overview / Psychological Readout</p>
+        </div>
+
+        <div class="profile-grid">
+          <article class="profile-card">
+            <span class="profile-label">Age</span>
+            <strong>34</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-label">Nationality</span>
+            <strong>British</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-label">Position</span>
+            <strong>MI6 Senior HUMINT Case Officer</strong>
+          </article>
+          <article class="profile-card">
+            <span class="profile-label">Origin</span>
+            <strong>London, England</strong>
+          </article>
+        </div>
+
+        <article class="profile-section">
+          <span class="profile-section-label">Background</span>
+          <p>
+            Raised between the rigid standards of an orchestra conductor father and a London auction-house curator mother,
+            he learned composure before warmth. Precision, restraint, and immaculate control were treated as necessities,
+            not virtues. What remains on the surface is elegance. What survives underneath is a man who was trained to
+            read others long before he was allowed to understand himself.
+          </p>
+        </article>
+
+        <article class="profile-section profile-section--quote">
+          <span class="profile-section-label">Impression</span>
+          <p>
+            Calm, immaculate, and difficult to penetrate. He leaves the impression of still water at midnight: polished,
+            silent, and far deeper than first contact suggests.
+          </p>
+        </article>
+      </div>
+    </section>
+  </div>
+
 <script src="assets/js/vendor/instanced-mouse-effect.bundle.js"></script>
 <script src="assets/js/app/main.js"></script>
-
 </body>
 </html>
