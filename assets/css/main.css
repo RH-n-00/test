@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400..900&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400&family=Noto+Sans+KR:wght@300;400;500&display=swap');
 
 :root{
   --bg:#040507;
@@ -201,6 +201,8 @@ body::after{
   font-family:var(--font-title);
   font-size:clamp(4.4rem, 10.5vw, 8.8rem);
   font-weight:900;
+  font-optical-sizing:auto;
+  font-variation-settings:"opsz" 96, "wght" 900;
   line-height:.94;
   letter-spacing:.045em;
   color:rgba(245,244,240,0.96);
