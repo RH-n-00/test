@@ -15,3 +15,5 @@ SIGN-IN +
 - 동작 및 페이크 작동 flow 추가
 - button backlight Change
 - Title font Change
+
+##벌레가 너무많다!!!!
