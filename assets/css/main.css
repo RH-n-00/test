@@ -228,7 +228,7 @@ body::after{
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:8px;
+  gap:4px;
   margin:0;
   text-transform:uppercase;
 }
@@ -258,7 +258,7 @@ body::after{
   display:flex;
   justify-content:center;
   gap:24px;
-  margin-top:42px;
+  margin-top:26px;
   pointer-events:auto;
   flex-wrap:wrap;
 }
@@ -827,7 +827,7 @@ body::after{
   font-size:9px;
   letter-spacing:.2em;
 }
-  .hero-buttons{gap:14px; margin-top:30px}
+  .hero-buttons{gap:14px; margin-top:20px}
   .glass-button{
     width:100%;
     min-width:0;
