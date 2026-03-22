@@ -105,12 +105,9 @@
 
   <div class="signin-modal-overlay" id="signInModal" aria-hidden="true">
     <section class="signin-modal" role="dialog" aria-modal="true" aria-labelledby="signInTitle">
-      <div class="signin-modal-head">
-        <div class="signin-head-copy">
-          <span class="profile-chip">SECURE ACCESS CHANNEL</span>
-          <span class="profile-chip profile-chip--soft">NODE AUTH / SW7</span>
-        </div>
+      <h2 class="sr-only" id="signInTitle">Sign In</h2>
 
+      <div class="signin-modal-head">
         <div class="signin-modal-actions">
           <button class="signin-translate" id="translateButton" type="button" hidden>해석</button>
           <button class="signin-modal-close" id="signInClose" type="button" aria-label="창 닫기">×</button>
@@ -118,49 +115,34 @@
       </div>
 
       <div class="signin-stage signin-stage--form is-active" id="signInStageForm">
-        <p class="signin-kicker">Restricted Sign-In</p>
-        <h2 class="signin-title" id="signInTitle">Identity handshake required.</h2>
-        <p class="signin-copy">실제 인증은 연결되어 있지 않습니다. 아무 내용이나 입력하면 신원 확인 시퀀스가 시작됩니다.</p>
-
         <form class="signin-form" id="signInForm">
           <label class="signin-field">
             <span>Operator ID</span>
-            <input type="text" name="operator" autocomplete="off" placeholder="Enter any identifier" />
+            <input type="text" name="operator" autocomplete="off" />
           </label>
 
           <label class="signin-field">
             <span>Access Phrase</span>
-            <input type="password" name="passphrase" autocomplete="off" placeholder="Enter any phrase" />
+            <input type="password" name="passphrase" autocomplete="off" />
           </label>
 
-          <button class="signin-submit" type="submit">Request Access</button>
+          <button class="signin-submit" type="submit">Access</button>
         </form>
       </div>
 
       <div class="signin-stage signin-stage--verify" id="signInStageVerify">
-        <p class="signin-kicker">Verification Sweep</p>
-        <h2 class="signin-title">Authenticating local identity trace.</h2>
-        <p class="signin-copy" id="verifyStatus">Establishing internal relay...</p>
+        <p class="signin-statusline" id="verifyStatus">Establishing internal relay...</p>
 
         <div class="verify-meter" aria-hidden="true">
           <span class="verify-meter-fill" id="verifyFill"></span>
         </div>
-
-        <div class="verify-markers">
-          <span>signature hash</span>
-          <span>residence node</span>
-          <span>signal recovery</span>
-        </div>
       </div>
 
       <div class="signin-stage signin-stage--message" id="signInStageMessage">
-        <p class="signin-kicker">Recovered Transmission</p>
-        <h2 class="signin-title">Signal resolved from secure domestic channel.</h2>
-        <p class="signin-copy" id="signalHint">Recovered transmission rendered in Morse. Use [해석] to decode.</p>
-
         <div class="signal-frame">
           <pre class="signal-output" id="signalOutput"></pre>
         </div>
+        <p class="signin-copy signal-hint" id="signalHint">Recovered transmission rendered in Morse. Use [해석] to decode.</p>
       </div>
     </section>
   </div>
