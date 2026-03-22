@@ -1,12 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@600;700&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Libre+Baskerville:wght@400&family=Noto+Sans+KR:wght@300;400;500&display=swap');
 
-@font-face{
-  font-family:'FutureBlack';
-  src:url('../fonts/FutureBlack-Regular.ttf') format('truetype');
-  font-weight:400;
-  font-style:normal;
-  font-display:swap;
-}
 :root{
   --bg:#040507;
   --panel:#050608;
@@ -26,7 +19,7 @@
   --button-glow-2:rgba(210, 180, 131, 0.08);
   --font-baskerville: Baskerville, 'Baskerville Old Face', 'Libre Baskerville', Georgia, serif;
   --font-copperplate: Copperplate, 'Copperplate Gothic Bold', 'Copperplate Gothic Light', 'Palatino Linotype', serif;
-  --font-title: 'FutureBlack', sans-serif;
+  --font-title: "Bodoni Moda", "Libre Baskerville", Georgia, serif;
 }
 
 .sr-only{
@@ -205,9 +198,9 @@ body::after{
 }
 .hero-title{
   font-family:var(--font-title);
-  font-size:clamp(4.2rem, 10.5vw, 8.8rem);
-  font-weight:400;
-  letter-spacing:.04em;
+  font-size:clamp(4.4rem, 10.5vw, 8.8rem);
+  font-weight:600;
+  letter-spacing:.08em;
 
   background:linear-gradient(
     to bottom,
