@@ -197,6 +197,9 @@ body::after{
   padding:48px 32px;
 }
 .hero-title{
+  position:relative;
+  z-index:1;
+  isolation:isolate;
   margin:0 0 10px;
   font-family:var(--font-title);
   font-size:clamp(4.15rem, 9.45vw, 7.9rem);
@@ -209,6 +212,27 @@ body::after{
   -webkit-text-fill-color:initial;
   background-clip:initial;
   text-shadow:0 6px 16px rgba(0,0,0,.22);
+}
+.hero-title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:52%;
+  width:8.8em;
+  height:1.34em;
+  transform:translate(-50%, -50%);
+  border-radius:999px;
+  pointer-events:none;
+  z-index:-1;
+  background:radial-gradient(
+    ellipse at center,
+    rgba(255,248,240,.16) 0%,
+    rgba(230,204,171,.085) 28%,
+    rgba(160,126,92,.035) 50%,
+    rgba(0,0,0,0) 78%
+  );
+  filter:blur(22px);
+  opacity:.48;
 }
 @keyframes glowPulse {
   from {
@@ -813,9 +837,44 @@ body::after{
 @media (max-width: 700px){
   .shell{width:100vw; margin:0; min-height:100vh; border:none}
   .shell::before{inset:16px}
-  .topbar{padding:14px 14px 12px}
-  .label,.status{font-size:9px; letter-spacing:.22em; min-height:28px}
-  .hero{padding:22px 0 26px}
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+    padding:12px 12px 10px;
+  }
+  .top-left{
+    display:grid;
+    grid-template-columns:auto minmax(0, 1fr);
+    align-items:start;
+    gap:8px;
+    width:100%;
+  }
+  .top-right{
+    width:100%;
+    justify-content:flex-end;
+  }
+  .label,.status{
+    font-size:8px;
+    letter-spacing:.18em;
+    min-height:26px;
+    line-height:1.32;
+  }
+  .label{padding:5px 10px}
+  .label:not(.mark){
+    justify-content:flex-start;
+    text-align:left;
+    white-space:normal;
+  }
+  .status{
+    width:100%;
+    justify-content:flex-end;
+    text-align:right;
+  }
+  .hero{
+    align-items:flex-start;
+    padding:14px 0 24px;
+  }
   .guide-left{left:16px}
   .guide-right{right:16px}
   .hero-inner{width:min(92vw, 100%)}
@@ -829,6 +888,12 @@ body::after{
   line-height:.93;
   letter-spacing:.05em;
 }
+  .hero-title::after{
+    width:7.4em;
+    height:1.18em;
+    filter:blur(18px);
+    opacity:.38;
+  }
   .hero-tagline-main{
   font-size:10px;
   letter-spacing:.24em;
