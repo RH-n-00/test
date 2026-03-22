@@ -46,10 +46,9 @@
   ];
 
   const decodedLines = [
-    '14 HALCYON MEWS',
-    'SOUTH KENSINGTON, LONDON SW7',
-    'TWO-STOREY MEWS HOUSE',
-    '26.03.22 / 2 P.M.'
+    'SOUTH KENSINGTON, LONDON.',
+    'MEWS HOUSE',
+    '26.03.21 / 5:30 A.M.'
   ];
 
   const morseMap = {
