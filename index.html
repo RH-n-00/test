@@ -52,42 +52,45 @@
   <!-- Replace the profile fields below with your own character data. -->
   <div class="profile-modal-overlay" id="profileModal" aria-hidden="true">
     <section class="profile-modal profile-modal--dossier" role="dialog" aria-modal="true" aria-labelledby="profileTitleV1">
-      <button class="profile-modal-close" id="profileClose" type="button" aria-label="프로필 닫기">×</button>
+      <div class="profile-modal-actions">
+        <button class="signin-translate profile-translate" id="profileTranslateButton" type="button" aria-pressed="false">번역</button>
+        <button class="profile-modal-close" id="profileClose" type="button" aria-label="프로필 닫기">×</button>
+      </div>
 
       <div class="profile-modal-head">
-        <span class="profile-chip">SIS CHARACTER DOSSIER</span>
-        <span class="profile-chip profile-chip--soft">LEVEL 4 / INTERNAL</span>
+        <span class="profile-chip" data-profile-copy="chipPrimary">SIS CHARACTER DOSSIER</span>
+        <span class="profile-chip profile-chip--soft" data-profile-copy="chipSecondary">LEVEL 4 / INTERNAL</span>
       </div>
 
       <div class="profile-modal-body">
         <div class="profile-heading-block">
-          <p class="profile-kicker">Filed Profile</p>
-          <h2 class="profile-name" id="profileTitleV1">Noel Hale</h2>
-          <p class="profile-subtitle">Field Asset Overview / Psychological Readout</p>
+          <p class="profile-kicker" data-profile-copy="kicker">Filed Profile</p>
+          <h2 class="profile-name" id="profileTitleV1" data-profile-copy="name">Noel Hale</h2>
+          <p class="profile-subtitle" data-profile-copy="subtitle">Field Asset Overview / Psychological Readout</p>
         </div>
 
         <div class="profile-grid">
           <article class="profile-card">
-            <span class="profile-label">Age</span>
-            <strong>34</strong>
+            <span class="profile-label" data-profile-copy="labelAge">Age</span>
+            <strong data-profile-copy="valueAge">34</strong>
           </article>
           <article class="profile-card">
-            <span class="profile-label">Nationality</span>
-            <strong>British</strong>
+            <span class="profile-label" data-profile-copy="labelNationality">Nationality</span>
+            <strong data-profile-copy="valueNationality">British</strong>
           </article>
           <article class="profile-card">
-            <span class="profile-label">Position</span>
-            <strong>MI6 Senior HUMINT Case Officer</strong>
+            <span class="profile-label" data-profile-copy="labelPosition">Position</span>
+            <strong data-profile-copy="valuePosition">MI6 Senior HUMINT Case Officer</strong>
           </article>
           <article class="profile-card">
-            <span class="profile-label">Origin</span>
-            <strong>London, England</strong>
+            <span class="profile-label" data-profile-copy="labelOrigin">Origin</span>
+            <strong data-profile-copy="valueOrigin">London, England</strong>
           </article>
         </div>
 
         <article class="profile-section">
-          <span class="profile-section-label">Background</span>
-          <p>
+          <span class="profile-section-label" data-profile-copy="sectionBackgroundLabel">Background</span>
+          <p data-profile-copy="sectionBackgroundText">
             Raised between the rigid standards of an orchestra conductor father and a London auction-house curator mother,
             he learned composure before warmth. Precision, restraint, and immaculate control were treated as necessities,
             not virtues. What remains on the surface is elegance. What survives underneath is a man who was trained to
@@ -96,8 +99,8 @@
         </article>
 
         <article class="profile-section profile-section--quote">
-          <span class="profile-section-label">Impression</span>
-          <p>
+          <span class="profile-section-label" data-profile-copy="sectionImpressionLabel">Impression</span>
+          <p data-profile-copy="sectionImpressionText">
             Calm, immaculate, and difficult to penetrate. He leaves the impression of still water at midnight: polished,
             silent, and far deeper than first contact suggests.
           </p>
