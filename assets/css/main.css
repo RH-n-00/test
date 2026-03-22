@@ -417,7 +417,9 @@ body::after{
   position:relative;
   width:min(920px, 100%);
   max-height:min(84vh, 880px);
-  overflow:auto;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
   padding:28px 28px 30px;
   background:
     linear-gradient(180deg, rgba(7,10,16,.95), rgba(3,5,8,.98)),
@@ -496,8 +498,24 @@ body::after{
 .profile-translate{
   flex:0 0 auto;
 }
+.profile-modal-body{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
 .profile-heading-block{
   margin-bottom:24px;
+}
+.profile-scroll{
+  min-height:0;
+  max-height:min(50vh, 490px);
+  overflow-y:auto;
+  padding-right:10px;
+  overscroll-behavior:contain;
+}
+.profile-history{
+  display:grid;
+  gap:14px;
 }
 .profile-kicker{
   margin:0 0 10px;
@@ -531,6 +549,9 @@ body::after{
   gap:16px;
   margin-bottom:20px;
 }
+.profile-grid--compact{
+  margin-bottom:18px;
+}
 .profile-card{
   padding:18px 20px;
   background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
@@ -551,11 +572,12 @@ body::after{
   color:#f7f2ea;
   font-size:1rem;
   font-weight:600;
+  line-height:1.6;
   letter-spacing:.03em;
 }
 .profile-section{
   position:relative;
-  margin-top:16px;
+  margin-top:0;
   padding:22px 22px 24px;
   background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.012));
   border:1px solid rgba(255,255,255,.065);
@@ -580,8 +602,14 @@ body::after{
   font-size:1rem;
   line-height:1.8;
 }
-.profile-modal::-webkit-scrollbar{width:10px}
-.profile-modal::-webkit-scrollbar-thumb{
+.profile-section-copy{
+  color:rgba(244,238,228,.86);
+}
+.profile-section-copy p + p{
+  margin-top:12px;
+}
+.profile-scroll::-webkit-scrollbar{width:10px}
+.profile-scroll::-webkit-scrollbar-thumb{
   background:rgba(210,180,131,.22);
   border-radius:999px;
 }
@@ -923,6 +951,7 @@ body::after{
   .profile-modal-close{width:38px}
   .profile-translate{min-width:68px; padding:0 12px; font-size:.7rem}
   .profile-grid{grid-template-columns:1fr; gap:12px}
+  .profile-scroll{max-height:min(52vh, 420px); padding-right:6px}
   .profile-section{padding:18px}
   .profile-section p{font-size:.94rem; line-height:1.75}
 
