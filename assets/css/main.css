@@ -199,7 +199,7 @@ body::after{
 .hero-title{
   margin:0 0 10px;
   font-family:var(--font-title);
-  font-size:clamp(4rem, 9.2vw, 7.6rem);
+  font-size:clamp(4.15rem, 9.45vw, 7.9rem);
   font-weight:900;
   line-height:.93;
   letter-spacing:.04em;
