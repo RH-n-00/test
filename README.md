@@ -11,5 +11,7 @@
 03/22 Profile +
 - PROFILE 버튼을 누르면 중앙 정렬형 glass dossier 모달이 열립니다.
 - 내용은 index.html 하단의 profile modal 영역에서 바로 수정할 수 있습니다.
-
-  아이고 힘드렁
+SIGN-IN +
+- 동작 및 페이크 작동 flow 추가
+- button backlight Change
+- Title font Change
