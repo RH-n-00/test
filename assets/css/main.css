@@ -196,6 +196,42 @@ body::after{
   pointer-events:none;
   padding:48px 32px;
 }
+.hero-overlay::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:0;
+  width:min(54vw, 520px);
+  height:62%;
+  transform:translateX(-50%);
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,247,233,.18) 0%, rgba(255,239,220,.12) 16%, rgba(210,180,131,.08) 34%, rgba(210,180,131,.03) 52%, transparent 76%),
+    linear-gradient(180deg, rgba(255,245,228,.11) 0%, rgba(255,240,220,.06) 20%, rgba(210,180,131,.025) 38%, transparent 78%);
+  clip-path:polygon(42% 0, 58% 0, 80% 54%, 100% 100%, 0 100%, 20% 54%);
+  filter:blur(20px);
+  opacity:.74;
+  mix-blend-mode:screen;
+}
+.hero-overlay::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:28px;
+  width:min(13vw, 120px);
+  height:14px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  border-radius:999px;
+  background:linear-gradient(90deg, transparent 0%, rgba(255,244,227,.3) 18%, rgba(255,248,239,.62) 50%, rgba(255,244,227,.3) 82%, transparent 100%);
+  box-shadow:0 0 26px rgba(255,246,230,.18), 0 0 54px rgba(210,180,131,.1);
+  opacity:.8;
+  mix-blend-mode:screen;
+}
+.hero-overlay > *{
+  position:relative;
+  z-index:1;
+}
 .hero-title{
   margin:0 0 10px;
   font-family:var(--font-title);
@@ -811,6 +847,19 @@ body::after{
   .prism-stage{min-height:520px}
   .prism-stage::before{inset:12px}
   .hero-overlay{padding:36px 22px}
+  .hero-overlay::before{
+    width:min(72vw, 360px);
+    height:48%;
+    top:4px;
+    filter:blur(18px);
+    opacity:.68;
+  }
+  .hero-overlay::after{
+    top:20px;
+    width:min(24vw, 96px);
+    height:10px;
+    opacity:.72;
+  }
   .hero-title{
   margin-bottom:8px;
   padding-left:.04em;
