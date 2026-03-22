@@ -26,7 +26,7 @@
   --button-glow-2:rgba(210, 180, 131, 0.08);
   --font-baskerville: Baskerville, 'Baskerville Old Face', 'Libre Baskerville', Georgia, serif;
   --font-copperplate: Copperplate, 'Copperplate Gothic Bold', 'Copperplate Gothic Light', 'Palatino Linotype', serif;
-  --font-title:'Cinzel', var(--font-baskerville);
+  --font-title: 'FutureBlack', sans-serif;
 }
 
 .sr-only{
