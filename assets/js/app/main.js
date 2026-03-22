@@ -99,23 +99,36 @@
     }
   };
 
+  const getTypingDelay = (char, mode = 'morse') => {
+    if (char === '\n') return 320 + Math.random() * 120;
+    if (char === ' ') return mode === 'morse' ? 90 + Math.random() * 40 : 100 + Math.random() * 55;
+    if (char === '/') return 170 + Math.random() * 70;
+    if (char === '.' || char === '-') return mode === 'morse' ? 58 + Math.random() * 38 : 34 + Math.random() * 22;
+    if (char === ',') return 160 + Math.random() * 50;
+    return mode === 'morse' ? 46 + Math.random() * 30 : 40 + Math.random() * 28;
+  };
+
   const renderSignal = (text, mode = 'morse') => {
     stopSignInTimers();
     signalOutput.textContent = '';
     signalOutput.classList.toggle('is-decoded', mode === 'decoded');
+    signalOutput.classList.add('is-typing');
 
     let index = 0;
     const step = () => {
-      signalOutput.textContent = text.slice(0, index);
+      const char = text.charAt(index);
+      signalOutput.textContent += char;
       index += 1;
-      if (index <= text.length) {
-        typingTimer = window.setTimeout(step, mode === 'morse' ? 12 : 18);
+
+      if (index < text.length) {
+        typingTimer = window.setTimeout(step, getTypingDelay(char, mode));
       } else {
+        signalOutput.classList.remove('is-typing');
         typingTimer = null;
       }
     };
 
-    step();
+    typingTimer = window.setTimeout(step, 180);
   };
 
   const resetSignInModal = () => {
@@ -127,7 +140,7 @@
     if (verifyStatus) verifyStatus.textContent = verificationMessages[0];
     if (signalOutput) {
       signalOutput.textContent = '';
-      signalOutput.classList.remove('is-decoded');
+      signalOutput.classList.remove('is-decoded', 'is-typing');
     }
     if (signalHint) {
       signalHint.textContent = 'Recovered transmission rendered in Morse. Use [해석] to decode.';
