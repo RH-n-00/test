@@ -235,18 +235,18 @@ body::after{
 
 .hero-tagline-main{
   margin:0;
-  color:rgba(255, 255, 255, 0.92);
+  color:rgba(255, 255, 255, 0.82);
   font-family:var(--font-copperplate);
   font-size:clamp(0.84rem, 1.75vw, 1.08rem);
-  font-weight:550;
+  font-weight:650;
   line-height:1.6;
-  letter-spacing:0.28em;
+  letter-spacing:0.3em;
   text-shadow:0 0 20px rgba(255, 245, 236, 0.18), 0 0 42px rgba(112, 18, 26, 0.16);
 }
 
 .hero-tagline-sub{
   margin:0;
-  color:rgba(255, 255, 255, 0.6);
+  color:rgba(255, 255, 255, 0.45);
   font-family:var(--font-copperplate);
   font-size:clamp(0.72rem, 1.35vw, 0.92rem);
   font-weight:400;
